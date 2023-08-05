@@ -8,32 +8,30 @@
 
         public static async Task Print(string url)
         {
-            Dictionary<string, List<List<string>>> result = await ParsingAsync(url);
+            Dictionary<string, List<float>> result = await ParsingAsync(url);
             if (result != null)
             {
+                Console.WriteLine("Персонаж, disadventage, winrate");
+                Console.WriteLine("-----------------------------------------");
                 foreach (var item in result)
                 {
-                    Console.WriteLine("-----------------------------------------");
-                    //Console.WriteLine(item.Key);
-                    Console.WriteLine("-----------------------------------------");
-                    item.Value.ForEach(r => Console.WriteLine(string.Join("\t", r)));
-                    Console.WriteLine("-----------------------------------------\n");
+                    await Console.Out.WriteLineAsync($"{item.Key}, {item.Value[0]}, {item.Value[1]}");
                 }
+                Console.WriteLine("-----------------------------------------");
             }
         }
-        private static async Task<Dictionary<string, List<List<string>>>> ParsingAsync(string url)
+        public static async Task<Dictionary<string, List<float>>> ParsingAsync(string url)
         {
-            int i = 1;
             try
             {
-                Dictionary<string, List<List<string>>> result = new Dictionary<string, List<List<string>>>();
+                Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
 
                 using (HttpClientHandler hdl = new HttpClientHandler { AllowAutoRedirect = false, AutomaticDecompression = System.Net.DecompressionMethods.Deflate | System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.None })
                 {
                     using (var clnt = new HttpClient(hdl))
                     {
                         // Устанавливаем User-Agent заголовок
-                        clnt.DefaultRequestHeaders.Add("User-Agent", "User");
+                        clnt.DefaultRequestHeaders.Add("User-Agent", "boba");
                         using (HttpResponseMessage resp = await clnt.GetAsync(url))
                         {
                             if (resp.IsSuccessStatusCode)
@@ -50,28 +48,29 @@
                                         var character = characters.SelectNodes(".//tr");
                                         if (character != null && character.Count > 0)
                                         {
-                                            var res = new List<List<string>>();
-
                                             foreach (var row in character)
                                             {
                                                 var cells = row.SelectNodes(".//td");
-                                                if (cells != null && cells.Count > 0)
+                                                if (cells != null && cells.Count >= 4)  // Убедитесь, что есть достаточно ячеек
                                                 {
-                                                    List<string> rowData = new List<string>();
-                                                    int n = 1;
-                                                    foreach (var cell in cells)
-                                                    {
-                                                        string cellText = cell.InnerText;
-                                                        rowData.Add(cellText);
-                                                    }
+                                                    string key = cells[1].InnerText.Trim().ToLower();
 
-                                                    res.Add(rowData);
+                                                    string disadventageString = cells[2].InnerText.Trim().Replace('.', ',');
+                                                    float disadventage = float.Parse(disadventageString.Substring(0, disadventageString.Length - 1));
+
+                                                    string winrateString = cells[3].InnerText.Trim().Replace('.', ',');
+                                                    float winrate = float.Parse(winrateString.Substring(0, winrateString.Length - 1));
+
+                                                    result[key] = new List<float> { disadventage, winrate };
                                                 }
                                             }
 
-                                            result[$"character {i++}"] = res;
+                                            return result;
                                         }
-                                        return result;
+                                        else
+                                        {
+                                            Console.WriteLine("No rows");
+                                        }
                                     }
                                     else
                                     {
