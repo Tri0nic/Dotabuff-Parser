@@ -8,7 +8,7 @@ namespace Dotabuff_Parser
 {
     internal class Characters
     {
-        public static List<string> dota2Heroes = new List<string>
+        public static List<string> characters = new List<string>
         {
             "abaddon",
             "alchemist",
