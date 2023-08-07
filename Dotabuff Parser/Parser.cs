@@ -1,25 +1,123 @@
-﻿namespace Dotabuff_Parser
+﻿
+namespace Dotabuff_Parser
 {
-    internal class Parser
+    public class Parser
     {
-        //string url = "";
-
-        //"https://www.dotabuff.com/heroes/meepo/counters"
-
-        public static async Task Print(string url)
+        /// <summary>
+        /// Создание словаря с полной статистикой противников
+        /// </summary>
+        /// <param name="firstEnemy">Первый противник</param>
+        /// <param name="secondEnemy">Второй противник</param>
+        /// <param name="thirdEnemy">Третий противник</param>
+        /// <param name="fourthEnemy">Четвертый противник</param>
+        /// <returns></returns>
+        public static Dictionary<string, List<float>> CharacterStats(Dictionary<string, List<float>> firstEnemy,
+                                                                     Dictionary<string, List<float>> secondEnemy,
+                                                                     Dictionary<string, List<float>> thirdEnemy,
+                                                                     Dictionary<string, List<float>> fourthEnemy,
+                                                                     string firstEnemyStr,
+                                                                     string secondEnemyStr,
+                                                                     string thirdEnemyStr,
+                                                                     string fourthEnemyStr)
         {
-            Dictionary<string, List<float>> result = await ParsingAsync(url);
-            if (result != null)
+            // Удаление занятых персонажей
+            RemoveOccupiedCharacters(firstEnemy, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
+            RemoveOccupiedCharacters(secondEnemy, firstEnemyStr, thirdEnemyStr, fourthEnemyStr);
+            RemoveOccupiedCharacters(thirdEnemy, secondEnemyStr, firstEnemyStr, fourthEnemyStr);
+            RemoveOccupiedCharacters(fourthEnemy, secondEnemyStr, thirdEnemyStr, firstEnemyStr);
+
+            // Вывод результата
+            return ResultStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy);
+        }
+
+        /// <summary>
+        /// Вычисление словаря с формой: Key: characterName; Value (List): disadv1, disadv2, disadv3, disadv4, sumDisadv, sumWinrate;
+        /// </summary>
+        /// <param name="firstEnemy"></param>
+        /// <param name="secondEnemy"></param>
+        /// <param name="thirdEnemy"></param>
+        /// <param name="fourthEnemy"></param>
+        /// <returns></returns>
+        public static Dictionary<string, List<float>> ResultStats(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy)
+        {
+            Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
+
+            #region Добавление четырех disadventage
+            foreach (var kvp1 in firstEnemy)
             {
-                Console.WriteLine("Персонаж, disadventage, winrate");
-                Console.WriteLine("-----------------------------------------");
-                foreach (var item in result)
+                var firstElement = kvp1.Value.First();
+                result.Add(kvp1.Key, new List<float> { firstElement });
+            }
+            MergeFirstListElementInDictionaries(result, secondEnemy);
+            MergeFirstListElementInDictionaries(result, thirdEnemy);
+            MergeFirstListElementInDictionaries(result, fourthEnemy);
+            #endregion
+            // Вычисление сумм disadventage и winrate
+            Dictionary<string, List<float>> disadventageAndWinrateSum = DisadventageAndWinrateSum(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy);
+            // Добавление сумм disadventage и winrate к результирующему словарю
+            MergeDictionaries(result, disadventageAndWinrateSum);
+            return result;
+        }
+
+        /// <summary>
+        /// Слияние первого элемента списка словаря в другой словарь
+        /// </summary>
+        /// <param name="mergedDict">Словарь, в которое происходит слияние</param>
+        /// <param name="dict">Сливающийся словарь</param>
+        public static void MergeFirstListElementInDictionaries(Dictionary<string, List<float>> mergedDict, Dictionary<string, List<float>> dict)
+        {
+            try 
+            {
+                foreach (var character in dict)
                 {
-                    await Console.Out.WriteLineAsync($"{item.Key}, {item.Value[0]}, {item.Value[1]}");
+                    var firstElement = character.Value.First();
+                    mergedDict[character.Key].Add(firstElement);
                 }
-                Console.WriteLine("-----------------------------------------");
+            }
+            catch (Exception ex) { Console.WriteLine(ex); }
+            
+        }
+
+        /// <summary>
+        /// Слияние двух словарей
+        /// </summary>
+        /// <param name="mergedDict">Словарь, в которое происходит слияние</param>
+        /// <param name="dict">Сливающийся словарь</param>
+        public static void MergeDictionaries(Dictionary<string, List<float>> mergedDict, Dictionary<string, List<float>> dict)
+        {
+            // Error
+            foreach (var character in dict)
+            {
+                mergedDict[character.Key].AddRange(character.Value);
             }
         }
+        /// <summary>
+        /// Вычисление сумм Disadventage и Winrate
+        /// </summary>
+        /// <param name="firstEnemy"></param>
+        /// <param name="secondEnemy"></param>
+        /// <param name="thirdEnemy"></param>
+        /// <param name="fourthEnemy"></param>
+        public static Dictionary<string, List<float>> DisadventageAndWinrateSum(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy)
+        {
+            Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
+            foreach (var character in firstEnemy)
+            {
+                string key = character.Key.ToLower(); //.Replace("-", " ")
+                List<float> value = firstEnemy[key].Zip(secondEnemy[key], (a, b) => a + b).ToList()
+                    .Zip(thirdEnemy[key.ToLower()], (ab, c) => ab + c)
+                    .Zip(fourthEnemy[key.ToLower()], (abc, d) => abc + d)
+                    .ToList();
+                result[key] = value;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Парсинг страницы в словарь со статистикой одного противника
+        /// </summary>
+        /// <param name="url">Ссылка на героя противника</param>
+        /// <returns></returns>
         public static async Task<Dictionary<string, List<float>>> ParsingAsync(string url)
         {
             try
@@ -31,7 +129,7 @@
                     using (var clnt = new HttpClient(hdl))
                     {
                         // Устанавливаем User-Agent заголовок
-                        clnt.DefaultRequestHeaders.Add("User-Agent", "boba");
+                        clnt.DefaultRequestHeaders.Add("User-Agent", "User");
                         using (HttpResponseMessage resp = await clnt.GetAsync(url))
                         {
                             if (resp.IsSuccessStatusCode)
@@ -67,15 +165,15 @@
 
                                             return result;
                                         }
-                                        else
-                                        {
-                                            Console.WriteLine("No rows");
-                                        }
+                                        //else
+                                        //{
+                                        //    Console.WriteLine("No rows");
+                                        //}
                                     }
-                                    else
-                                    {
-                                        Console.WriteLine("No tables");
-                                    }
+                                    //else
+                                    //{
+                                    //    Console.WriteLine("No tables");
+                                    //}
                                 }
                             }
                         }
@@ -85,6 +183,30 @@
             catch (Exception ex) { Console.WriteLine(ex.Message); }
 
             return null;
+        }
+        
+        /// <summary>
+        /// Создание ссылки для парсинга
+        /// </summary>
+        /// <param name="characterName"></param>
+        /// <returns></returns>
+        public static string UrlCreator(string characterName)
+        {
+            return $"https://www.dotabuff.com/heroes/{characterName.Replace(" ", "-")}/counters";
+        }
+
+        /// <summary>
+        /// Удаление из словаря занятых персонажей
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="firstCharacterStr"></param>
+        /// <param name="secondCharacterStr"></param>
+        /// <param name="thirdCharacterStr"></param>
+        public static void RemoveOccupiedCharacters(Dictionary<string, List<float>> dict, string firstCharacterStr, string secondCharacterStr, string thirdCharacterStr)
+        {
+            dict.Remove(firstCharacterStr);
+            dict.Remove(secondCharacterStr);
+            dict.Remove(thirdCharacterStr);
         }
     }
 }
