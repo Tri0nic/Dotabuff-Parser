@@ -123,7 +123,6 @@ namespace DotabuffWF
             // Сортировка по столбцу с суммарным Disadventage
             dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Descending);
             dataGridView2.Sort(dataGridView2.Columns[5], ListSortDirection.Descending);
-
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -137,11 +136,27 @@ namespace DotabuffWF
             comboBox2.DataSource = new List<string>(Characters.characters);
             comboBox3.DataSource = new List<string>(Characters.characters);
             comboBox4.DataSource = new List<string>(Characters.characters);
+            // Очистка comboBox
+            ComboBoxClear();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Очистка comboBox
+            ComboBoxClear();
+        }
+        // Очистка comboBox
+        public void ComboBoxClear()
+        {
+            comboBox1.SelectedIndex = -1;
+            comboBox2.SelectedIndex = -1;
+            comboBox3.SelectedIndex = -1;
+            comboBox4.SelectedIndex = -1;
         }
     }
 }

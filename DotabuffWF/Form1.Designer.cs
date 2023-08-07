@@ -37,6 +37,7 @@
             label1 = new Label();
             label2 = new Label();
             dataGridView2 = new DataGridView();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             SuspendLayout();
@@ -53,11 +54,12 @@
             // 
             // button1
             // 
-            button1.Location = new Point(929, 403);
+            button1.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button1.Location = new Point(929, 464);
             button1.Name = "button1";
             button1.Size = new Size(163, 46);
             button1.TabIndex = 1;
-            button1.Text = "button1";
+            button1.Text = "Посчитать";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -123,11 +125,23 @@
             dataGridView2.Size = new Size(915, 245);
             dataGridView2.TabIndex = 8;
             // 
+            // button2
+            // 
+            button2.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button2.Location = new Point(929, 412);
+            button2.Name = "button2";
+            button2.Size = new Size(163, 46);
+            button2.TabIndex = 9;
+            button2.Text = "Очистить";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1104, 522);
+            Controls.Add(button2);
             Controls.Add(dataGridView2);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -156,5 +170,6 @@
         private Label label1;
         private Label label2;
         private DataGridView dataGridView2;
+        private Button button2;
     }
 }
