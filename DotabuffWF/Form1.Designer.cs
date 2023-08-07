@@ -36,7 +36,9 @@
             comboBox4 = new ComboBox();
             label1 = new Label();
             label2 = new Label();
+            dataGridView2 = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
@@ -45,7 +47,7 @@
             dataGridView1.Location = new Point(8, 10);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(915, 439);
+            dataGridView1.Size = new Size(915, 249);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
@@ -112,11 +114,21 @@
             label2.TabIndex = 7;
             label2.Text = "противника";
             // 
+            // dataGridView2
+            // 
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Location = new Point(8, 265);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowTemplate.Height = 25;
+            dataGridView2.Size = new Size(915, 245);
+            dataGridView2.TabIndex = 8;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1104, 462);
+            ClientSize = new Size(1104, 522);
+            Controls.Add(dataGridView2);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(comboBox4);
@@ -128,6 +140,7 @@
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -142,5 +155,6 @@
         private ComboBox comboBox4;
         private Label label1;
         private Label label2;
+        private DataGridView dataGridView2;
     }
 }

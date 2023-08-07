@@ -56,6 +56,7 @@ namespace Dotabuff_Parser
             "juggernaut",
             "keeper of the light",
             "kunkka",
+            "legion commander",
             "leshrac",
             "lich",
             "lifestealer",
