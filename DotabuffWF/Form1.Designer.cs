@@ -41,20 +41,20 @@
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
-            dataGridView3 = new DataGridView();
-            button3 = new Button();
-            comboBox5 = new ComboBox();
-            comboBox6 = new ComboBox();
-            comboBox7 = new ComboBox();
-            comboBox8 = new ComboBox();
-            comboBox9 = new ComboBox();
-            comboBox10 = new ComboBox();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label7 = new Label();
-            label8 = new Label();
             label6 = new Label();
+            label8 = new Label();
+            label7 = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            comboBox10 = new ComboBox();
+            comboBox9 = new ComboBox();
+            comboBox8 = new ComboBox();
+            comboBox7 = new ComboBox();
+            comboBox6 = new ComboBox();
+            button3 = new Button();
+            dataGridView3 = new DataGridView();
+            comboBox5 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabControl1.SuspendLayout();
@@ -169,6 +169,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(comboBox5);
             tabPage1.Controls.Add(button1);
             tabPage1.Controls.Add(dataGridView2);
             tabPage1.Controls.Add(dataGridView1);
@@ -200,7 +201,6 @@
             tabPage2.Controls.Add(comboBox8);
             tabPage2.Controls.Add(comboBox7);
             tabPage2.Controls.Add(comboBox6);
-            tabPage2.Controls.Add(comboBox5);
             tabPage2.Controls.Add(button3);
             tabPage2.Controls.Add(dataGridView3);
             tabPage2.Location = new Point(4, 24);
@@ -211,14 +211,99 @@
             tabPage2.Text = "Добление героя в избранное";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // dataGridView3
+            // label6
             // 
-            dataGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView3.Location = new Point(6, 8);
-            dataGridView3.Name = "dataGridView3";
-            dataGridView3.RowTemplate.Height = 25;
-            dataGridView3.Size = new Size(915, 387);
-            dataGridView3.TabIndex = 9;
+            label6.AutoSize = true;
+            label6.Location = new Point(537, 460);
+            label6.Name = "label6";
+            label6.Size = new Size(38, 15);
+            label6.TabIndex = 22;
+            label6.Text = "label6";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(834, 460);
+            label8.Name = "label8";
+            label8.Size = new Size(38, 15);
+            label8.TabIndex = 21;
+            label8.Text = "label8";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(682, 460);
+            label7.Name = "label7";
+            label7.Size = new Size(38, 15);
+            label7.TabIndex = 20;
+            label7.Text = "label6";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(384, 460);
+            label5.Name = "label5";
+            label5.Size = new Size(38, 15);
+            label5.TabIndex = 19;
+            label5.Text = "label5";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(236, 460);
+            label4.Name = "label4";
+            label4.Size = new Size(38, 15);
+            label4.TabIndex = 18;
+            label4.Text = "label4";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(74, 460);
+            label3.Name = "label3";
+            label3.Size = new Size(38, 15);
+            label3.TabIndex = 17;
+            label3.Text = "label3";
+            // 
+            // comboBox10
+            // 
+            comboBox10.FormattingEnabled = true;
+            comboBox10.Location = new Point(778, 478);
+            comboBox10.Name = "comboBox10";
+            comboBox10.Size = new Size(143, 23);
+            comboBox10.TabIndex = 16;
+            // 
+            // comboBox9
+            // 
+            comboBox9.FormattingEnabled = true;
+            comboBox9.Location = new Point(629, 478);
+            comboBox9.Name = "comboBox9";
+            comboBox9.Size = new Size(143, 23);
+            comboBox9.TabIndex = 15;
+            // 
+            // comboBox8
+            // 
+            comboBox8.FormattingEnabled = true;
+            comboBox8.Location = new Point(480, 478);
+            comboBox8.Name = "comboBox8";
+            comboBox8.Size = new Size(143, 23);
+            comboBox8.TabIndex = 14;
+            // 
+            // comboBox7
+            // 
+            comboBox7.FormattingEnabled = true;
+            comboBox7.Location = new Point(331, 478);
+            comboBox7.Name = "comboBox7";
+            comboBox7.Size = new Size(143, 23);
+            comboBox7.TabIndex = 13;
+            // 
+            // comboBox6
+            // 
+            comboBox6.FormattingEnabled = true;
+            comboBox6.Location = new Point(182, 478);
+            comboBox6.Name = "comboBox6";
+            comboBox6.Size = new Size(143, 23);
+            comboBox6.TabIndex = 12;
             // 
             // button3
             // 
@@ -230,107 +315,22 @@
             button3.Text = "Добавить";
             button3.UseVisualStyleBackColor = true;
             // 
+            // dataGridView3
+            // 
+            dataGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView3.Location = new Point(6, 8);
+            dataGridView3.Name = "dataGridView3";
+            dataGridView3.RowTemplate.Height = 25;
+            dataGridView3.Size = new Size(915, 387);
+            dataGridView3.TabIndex = 9;
+            // 
             // comboBox5
             // 
             comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(13, 478);
+            comboBox5.Location = new Point(933, 337);
             comboBox5.Name = "comboBox5";
             comboBox5.Size = new Size(163, 23);
-            comboBox5.TabIndex = 11;
-            // 
-            // comboBox6
-            // 
-            comboBox6.FormattingEnabled = true;
-            comboBox6.Location = new Point(182, 478);
-            comboBox6.Name = "comboBox6";
-            comboBox6.Size = new Size(143, 23);
-            comboBox6.TabIndex = 12;
-            // 
-            // comboBox7
-            // 
-            comboBox7.FormattingEnabled = true;
-            comboBox7.Location = new Point(331, 478);
-            comboBox7.Name = "comboBox7";
-            comboBox7.Size = new Size(143, 23);
-            comboBox7.TabIndex = 13;
-            // 
-            // comboBox8
-            // 
-            comboBox8.FormattingEnabled = true;
-            comboBox8.Location = new Point(480, 478);
-            comboBox8.Name = "comboBox8";
-            comboBox8.Size = new Size(143, 23);
-            comboBox8.TabIndex = 14;
-            // 
-            // comboBox9
-            // 
-            comboBox9.FormattingEnabled = true;
-            comboBox9.Location = new Point(629, 478);
-            comboBox9.Name = "comboBox9";
-            comboBox9.Size = new Size(143, 23);
-            comboBox9.TabIndex = 15;
-            // 
-            // comboBox10
-            // 
-            comboBox10.FormattingEnabled = true;
-            comboBox10.Location = new Point(778, 478);
-            comboBox10.Name = "comboBox10";
-            comboBox10.Size = new Size(143, 23);
-            comboBox10.TabIndex = 16;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(74, 460);
-            label3.Name = "label3";
-            label3.Size = new Size(38, 15);
-            label3.TabIndex = 17;
-            label3.Text = "label3";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(236, 460);
-            label4.Name = "label4";
-            label4.Size = new Size(38, 15);
-            label4.TabIndex = 18;
-            label4.Text = "label4";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(384, 460);
-            label5.Name = "label5";
-            label5.Size = new Size(38, 15);
-            label5.TabIndex = 19;
-            label5.Text = "label5";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(682, 460);
-            label7.Name = "label7";
-            label7.Size = new Size(38, 15);
-            label7.TabIndex = 20;
-            label7.Text = "label6";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(834, 460);
-            label8.Name = "label8";
-            label8.Size = new Size(38, 15);
-            label8.TabIndex = 21;
-            label8.Text = "label8";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(537, 460);
-            label6.Name = "label6";
-            label6.Size = new Size(38, 15);
-            label6.TabIndex = 22;
-            label6.Text = "label6";
+            comboBox5.TabIndex = 12;
             // 
             // Form1
             // 
@@ -377,8 +377,8 @@
         private ComboBox comboBox8;
         private ComboBox comboBox7;
         private ComboBox comboBox6;
-        private ComboBox comboBox5;
         private Button button3;
         private Label label6;
+        private ComboBox comboBox5;
     }
 }

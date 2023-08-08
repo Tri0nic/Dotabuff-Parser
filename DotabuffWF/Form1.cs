@@ -34,7 +34,7 @@ namespace DotabuffWF
         /// <param name="secondEnemyStr"></param>
         /// <param name="thirdEnemyStr"></param>
         /// <param name="fourthEnemyStr"></param>
-        public static void DataGreedViewCreator(DataGridView table, string firstEnemyStr, string secondEnemyStr, string thirdEnemyStr, string fourthEnemyStr)
+        public static void DataGreedViewCreator(DataGridView table, string firstEnemyStr, string secondEnemyStr, string thirdEnemyStr, string fourthEnemyStr, string fifthEnemyStr)
         {
             // Создание столбцов в первой таблице
             table.Columns.Add("Column1", "Персонаж");
@@ -42,16 +42,18 @@ namespace DotabuffWF
             table.Columns.Add("Column3", $"{secondEnemyStr}");
             table.Columns.Add("Column4", $"{thirdEnemyStr}");
             table.Columns.Add("Column5", $"{fourthEnemyStr}");
-            table.Columns.Add("Column6", "Суммарный Disadventage");
-            table.Columns.Add("Column7", "Суммарный Winrate");
+            table.Columns.Add("Column6", $"{fifthEnemyStr}");
+            table.Columns.Add("Column7", "Суммарный Disadventage");
+            table.Columns.Add("Column8", "Суммарный Winrate");
 
             // Настройка ширины столбцов в первой таблице
             table.Columns[0].Width = 130;
-            table.Columns[1].Width = 130;
-            table.Columns[2].Width = 130;
-            table.Columns[3].Width = 130;
-            table.Columns[4].Width = 130;
-            table.Columns[5].Width = 105;
+            table.Columns[1].Width = 104;
+            table.Columns[2].Width = 104;
+            table.Columns[3].Width = 104;
+            table.Columns[4].Width = 104;
+            table.Columns[5].Width = 104;
+            table.Columns[6].Width = 105;
 
         }
 
@@ -68,27 +70,29 @@ namespace DotabuffWF
             string? secondEnemyStr = comboBox2.SelectedItem?.ToString();
             string? thirdEnemyStr = comboBox3.SelectedItem?.ToString();
             string? fourthEnemyStr = comboBox4.SelectedItem?.ToString();
+            string? fifthEnemyStr = comboBox5.SelectedItem?.ToString();
 
             // Создание словарей со статистикой
             Dictionary<string, List<float>> firstEnemy = await MakeEnemyDictAsync(firstEnemyStr);
             Dictionary<string, List<float>> secondEnemy = await MakeEnemyDictAsync(secondEnemyStr);
             Dictionary<string, List<float>> thirdEnemy = await MakeEnemyDictAsync(thirdEnemyStr);
             Dictionary<string, List<float>> fourthEnemy = await MakeEnemyDictAsync(fourthEnemyStr);
+            Dictionary<string, List<float>> fifthEnemy = await MakeEnemyDictAsync(fifthEnemyStr);
 
             // Вычисление результата
             Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
             try
             {
-                result = Parser.CharacterStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
+                result = Parser.CharacterStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, fifthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             // Создание первой таблицы
-            DataGreedViewCreator(dataGridView1, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
+            DataGreedViewCreator(dataGridView1, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
             // Создание второй таблицы
-            DataGreedViewCreator(dataGridView2, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
+            DataGreedViewCreator(dataGridView2, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
 
             // Заполнение первой таблицы
             foreach (var character in result)
@@ -138,8 +142,8 @@ namespace DotabuffWF
             }
 
             // Сортировка по столбцу с суммарным Disadventage
-            dataGridView1.Sort(dataGridView1.Columns[5], ListSortDirection.Descending);
-            dataGridView2.Sort(dataGridView2.Columns[5], ListSortDirection.Descending);
+            dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Descending);
+            dataGridView2.Sort(dataGridView2.Columns[6], ListSortDirection.Descending);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -153,6 +157,7 @@ namespace DotabuffWF
             comboBox2.DataSource = new List<string>(Characters.characters);
             comboBox3.DataSource = new List<string>(Characters.characters);
             comboBox4.DataSource = new List<string>(Characters.characters);
+            comboBox5.DataSource = new List<string>(Characters.characters);
             // Очистка comboBox
             ComboBoxClear();
         }
@@ -174,6 +179,7 @@ namespace DotabuffWF
             comboBox2.SelectedIndex = -1;
             comboBox3.SelectedIndex = -1;
             comboBox4.SelectedIndex = -1;
+            comboBox5.SelectedIndex = -1;
         }
     }
 }

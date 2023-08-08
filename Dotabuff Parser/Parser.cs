@@ -14,19 +14,22 @@
                                                                      Dictionary<string, List<float>> secondEnemy,
                                                                      Dictionary<string, List<float>> thirdEnemy,
                                                                      Dictionary<string, List<float>> fourthEnemy,
+                                                                     Dictionary<string, List<float>> fifthEnemy,
                                                                      string firstEnemyStr,
                                                                      string secondEnemyStr,
                                                                      string thirdEnemyStr,
-                                                                     string fourthEnemyStr)
+                                                                     string fourthEnemyStr,
+                                                                     string fifthEnemyStr)
         {
             // Удаление занятых персонажей
-            RemoveOccupiedCharacters(firstEnemy, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
-            RemoveOccupiedCharacters(secondEnemy, firstEnemyStr, thirdEnemyStr, fourthEnemyStr);
-            RemoveOccupiedCharacters(thirdEnemy, secondEnemyStr, firstEnemyStr, fourthEnemyStr);
-            RemoveOccupiedCharacters(fourthEnemy, secondEnemyStr, thirdEnemyStr, firstEnemyStr);
+            RemoveOccupiedCharacters(firstEnemy, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+            RemoveOccupiedCharacters(secondEnemy, firstEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+            RemoveOccupiedCharacters(thirdEnemy, secondEnemyStr, firstEnemyStr, fourthEnemyStr, fifthEnemyStr);
+            RemoveOccupiedCharacters(fourthEnemy, secondEnemyStr, thirdEnemyStr, firstEnemyStr, fifthEnemyStr);
+            RemoveOccupiedCharacters(fifthEnemy, secondEnemyStr, thirdEnemyStr, firstEnemyStr, fourthEnemyStr);
 
             // Вывод результата
-            return ResultStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy);
+            return ResultStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, fifthEnemy);
         }
 
         /// <summary>
@@ -37,11 +40,11 @@
         /// <param name="thirdEnemy"></param>
         /// <param name="fourthEnemy"></param>
         /// <returns></returns>
-        public static Dictionary<string, List<float>> ResultStats(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy)
+        public static Dictionary<string, List<float>> ResultStats(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy, Dictionary<string, List<float>> fifthEnemy)
         {
             Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
 
-            #region Добавление четырех disadventage
+            #region Добавление пяти disadventage
             if (firstEnemy != null)
             {
                 foreach (var kvp1 in firstEnemy)
@@ -57,9 +60,10 @@
             MergeFirstListElementInDictionaries(result, secondEnemy);
             MergeFirstListElementInDictionaries(result, thirdEnemy);
             MergeFirstListElementInDictionaries(result, fourthEnemy);
+            MergeFirstListElementInDictionaries(result, fifthEnemy);
             #endregion
             // Вычисление сумм disadventage и winrate
-            Dictionary<string, List<float>> disadventageAndWinrateSum = DisadventageAndWinrateSum(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy);
+            Dictionary<string, List<float>> disadventageAndWinrateSum = DisadventageAndWinrateSum(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, fifthEnemy);
             // Добавление сумм disadventage и winrate к результирующему словарю
             MergeDictionaries(result, disadventageAndWinrateSum);
             return result;
@@ -111,7 +115,7 @@
         /// <param name="secondEnemy"></param>
         /// <param name="thirdEnemy"></param>
         /// <param name="fourthEnemy"></param>
-        public static Dictionary<string, List<float>> DisadventageAndWinrateSum(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy)
+        public static Dictionary<string, List<float>> DisadventageAndWinrateSum(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy, Dictionary<string, List<float>> fifthEnemy)
         {   // TODO: сделать перегрузку для двух словарей
             Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
 
@@ -128,6 +132,7 @@
                 .Zip(secondEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (a, b) => a + b)
                 .Zip(thirdEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (ab, c) => ab + c)
                 .Zip(fourthEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (abc, d) => abc + d)
+                .Zip(fifthEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (abcd, e) => abcd + e)
                 .ToList();
 
                 result[key] = value;
@@ -224,14 +229,16 @@
         /// <param name="firstCharacterStr"></param>
         /// <param name="secondCharacterStr"></param>
         /// <param name="thirdCharacterStr"></param>
-        public static void RemoveOccupiedCharacters(Dictionary<string, List<float>> dict, string firstCharacterStr, string secondCharacterStr, string thirdCharacterStr)
+        public static void RemoveOccupiedCharacters(Dictionary<string, List<float>> dict, string firstCharacterStr, string secondCharacterStr, string thirdCharacterStr, string fourthCharacterStr)
         {
             if (firstCharacterStr != null)
                 dict?.Remove(firstCharacterStr);
             if (secondCharacterStr != null)
                 dict?.Remove(secondCharacterStr);
             if (thirdCharacterStr != null)
-                dict?.Remove(thirdCharacterStr);
+                dict?.Remove(thirdCharacterStr); 
+            if (fourthCharacterStr != null)
+                dict?.Remove(fourthCharacterStr);
         }
     }
 }
