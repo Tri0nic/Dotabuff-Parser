@@ -1,5 +1,4 @@
-﻿
-namespace Dotabuff_Parser
+﻿namespace Dotabuff_Parser
 {
     public class Parser
     {
@@ -43,10 +42,17 @@ namespace Dotabuff_Parser
             Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
 
             #region Добавление четырех disadventage
-            foreach (var kvp1 in firstEnemy)
+            if (firstEnemy != null)
             {
-                var firstElement = kvp1.Value.First();
-                result.Add(kvp1.Key, new List<float> { firstElement });
+                foreach (var kvp1 in firstEnemy)
+                {
+                    var firstElement = kvp1.Value.First();
+                    result.Add(kvp1.Key, new List<float> { firstElement });
+                }
+            }
+            else
+            {
+                throw new Exception("Введите персонажа");
             }
             MergeFirstListElementInDictionaries(result, secondEnemy);
             MergeFirstListElementInDictionaries(result, thirdEnemy);
@@ -66,7 +72,16 @@ namespace Dotabuff_Parser
         /// <param name="dict">Сливающийся словарь</param>
         public static void MergeFirstListElementInDictionaries(Dictionary<string, List<float>> mergedDict, Dictionary<string, List<float>> dict)
         {
-            try 
+            if (dict == null)
+            {
+                foreach (var character in mergedDict)
+                {
+                    //float firstElement = new float();
+                    mergedDict[character.Key].Add(new float());
+                }
+
+            }
+            else
             {
                 foreach (var character in dict)
                 {
@@ -74,8 +89,7 @@ namespace Dotabuff_Parser
                     mergedDict[character.Key].Add(firstElement);
                 }
             }
-            catch (Exception ex) { Console.WriteLine(ex); }
-            
+
         }
 
         /// <summary>
@@ -85,7 +99,6 @@ namespace Dotabuff_Parser
         /// <param name="dict">Сливающийся словарь</param>
         public static void MergeDictionaries(Dictionary<string, List<float>> mergedDict, Dictionary<string, List<float>> dict)
         {
-            // Error
             foreach (var character in dict)
             {
                 mergedDict[character.Key].AddRange(character.Value);
@@ -99,15 +112,24 @@ namespace Dotabuff_Parser
         /// <param name="thirdEnemy"></param>
         /// <param name="fourthEnemy"></param>
         public static Dictionary<string, List<float>> DisadventageAndWinrateSum(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy)
-        {
+        {   // TODO: сделать перегрузку для двух словарей
             Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
+
+            //firstEnemy ??= new Dictionary<string, List<float>>();
+            //secondEnemy ??= new Dictionary<string, List<float>>();
+            //thirdEnemy ??= new Dictionary<string, List<float>>();
+            //fourthEnemy ??= new Dictionary<string, List<float>>();
+
             foreach (var character in firstEnemy)
             {
                 string key = character.Key.ToLower(); //.Replace("-", " ")
-                List<float> value = firstEnemy[key].Zip(secondEnemy[key], (a, b) => a + b).ToList()
-                    .Zip(thirdEnemy[key.ToLower()], (ab, c) => ab + c)
-                    .Zip(fourthEnemy[key.ToLower()], (abc, d) => abc + d)
-                    .ToList();
+
+                List<float> value = firstEnemy[key]
+                .Zip(secondEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (a, b) => a + b)
+                .Zip(thirdEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (ab, c) => ab + c)
+                .Zip(fourthEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (abc, d) => abc + d)
+                .ToList();
+
                 result[key] = value;
             }
             return result;
@@ -192,7 +214,7 @@ namespace Dotabuff_Parser
         /// <returns></returns>
         public static string UrlCreator(string characterName)
         {
-            return $"https://www.dotabuff.com/heroes/{characterName.Replace(" ", "-")}/counters";
+            return $"https://www.dotabuff.com/heroes/{characterName?.Replace(" ", "-")}/counters";
         }
 
         /// <summary>
@@ -204,9 +226,12 @@ namespace Dotabuff_Parser
         /// <param name="thirdCharacterStr"></param>
         public static void RemoveOccupiedCharacters(Dictionary<string, List<float>> dict, string firstCharacterStr, string secondCharacterStr, string thirdCharacterStr)
         {
-            dict.Remove(firstCharacterStr);
-            dict.Remove(secondCharacterStr);
-            dict.Remove(thirdCharacterStr);
+            if (firstCharacterStr != null)
+                dict?.Remove(firstCharacterStr);
+            if (secondCharacterStr != null)
+                dict?.Remove(secondCharacterStr);
+            if (thirdCharacterStr != null)
+                dict?.Remove(thirdCharacterStr);
         }
     }
 }

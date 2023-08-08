@@ -11,6 +11,50 @@ namespace DotabuffWF
             InitializeComboBox();
         }
 
+        /// <summary>
+        /// Создание словарей со статистикой с выбранными персонажами из ComboBox
+        /// </summary>
+        /// <param name="character">Имя персонажа</param>
+        /// <returns></returns>
+        public static async Task<Dictionary<string, List<float>>> MakeEnemyDictAsync(string enemyStr)
+        {
+            
+            // Создание ссылки
+            string url = Parser.UrlCreator(enemyStr);
+            // Парсинг статистики в словарь
+            Dictionary<string, List<float>> enemy = await Parser.ParsingAsync(url);
+            return enemy;
+        }
+
+        /// <summary>
+        /// Создание и настройка таблицы
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="firstEnemyStr"></param>
+        /// <param name="secondEnemyStr"></param>
+        /// <param name="thirdEnemyStr"></param>
+        /// <param name="fourthEnemyStr"></param>
+        public static void DataGreedViewCreator(DataGridView table, string firstEnemyStr, string secondEnemyStr, string thirdEnemyStr, string fourthEnemyStr)
+        {
+            // Создание столбцов в первой таблице
+            table.Columns.Add("Column1", "Персонаж");
+            table.Columns.Add("Column2", $"{firstEnemyStr}");
+            table.Columns.Add("Column3", $"{secondEnemyStr}");
+            table.Columns.Add("Column4", $"{thirdEnemyStr}");
+            table.Columns.Add("Column5", $"{fourthEnemyStr}");
+            table.Columns.Add("Column6", "Суммарный Disadventage");
+            table.Columns.Add("Column7", "Суммарный Winrate");
+
+            // Настройка ширины столбцов в первой таблице
+            table.Columns[0].Width = 130;
+            table.Columns[1].Width = 130;
+            table.Columns[2].Width = 130;
+            table.Columns[3].Width = 130;
+            table.Columns[4].Width = 130;
+            table.Columns[5].Width = 105;
+
+        }
+
         private async void button1_Click(object sender, EventArgs e)
         {
             // Очистить DataGridView перед заполнением новыми данными
@@ -19,77 +63,50 @@ namespace DotabuffWF
             dataGridView2.Rows.Clear();
             dataGridView2.Columns.Clear();
 
-            // Получение выбранных героев
-            string firstEnemyStr = comboBox1.SelectedItem.ToString();
-            string secondEnemyStr = comboBox2.SelectedItem.ToString();
-            string thirdEnemyStr = comboBox3.SelectedItem.ToString();
-            string fourthEnemyStr = comboBox4.SelectedItem.ToString();
+            // Преобразование персонажа из comboBox в string
+            string? firstEnemyStr = comboBox1.SelectedItem?.ToString();
+            string? secondEnemyStr = comboBox2.SelectedItem?.ToString();
+            string? thirdEnemyStr = comboBox3.SelectedItem?.ToString();
+            string? fourthEnemyStr = comboBox4.SelectedItem?.ToString();
 
-            // Создание ссылок
-            string firstUrl = Parser.UrlCreator(firstEnemyStr);
-            string secondUrl = Parser.UrlCreator(secondEnemyStr);
-            string thirdUrl = Parser.UrlCreator(thirdEnemyStr);
-            string fourthUrl = Parser.UrlCreator(fourthEnemyStr);
-
-            // Парсинг в словари
-            Dictionary<string, List<float>> firstEnemy = await Parser.ParsingAsync(firstUrl);
-            Dictionary<string, List<float>> secondEnemy = await Parser.ParsingAsync(secondUrl);
-            Dictionary<string, List<float>> thirdEnemy = await Parser.ParsingAsync(thirdUrl);
-            Dictionary<string, List<float>> fourthEnemy = await Parser.ParsingAsync(fourthUrl);
+            // Создание словарей со статистикой
+            Dictionary<string, List<float>> firstEnemy = await MakeEnemyDictAsync(firstEnemyStr);
+            Dictionary<string, List<float>> secondEnemy = await MakeEnemyDictAsync(secondEnemyStr);
+            Dictionary<string, List<float>> thirdEnemy = await MakeEnemyDictAsync(thirdEnemyStr);
+            Dictionary<string, List<float>> fourthEnemy = await MakeEnemyDictAsync(fourthEnemyStr);
 
             // Вычисление результата
-            Dictionary<string, List<float>> result = Parser.CharacterStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
-
-            // Создание столбцов в первой таблице
-            dataGridView1.Columns.Add("Column1", "Персонаж");
-            dataGridView1.Columns.Add("Column2", $"{firstEnemyStr}");
-            dataGridView1.Columns.Add("Column3", $"{secondEnemyStr}");
-            dataGridView1.Columns.Add("Column4", $"{thirdEnemyStr}");
-            dataGridView1.Columns.Add("Column5", $"{fourthEnemyStr}");
-            dataGridView1.Columns.Add("Column6", "Суммарный Disadventage");
-            dataGridView1.Columns.Add("Column7", "Суммарный Winrate");
-            // Настройка ширины столбцов в первой таблице
-            dataGridView1.Columns[0].Width = 130;
-            dataGridView1.Columns[1].Width = 130;
-            dataGridView1.Columns[2].Width = 130;
-            dataGridView1.Columns[3].Width = 130;
-            dataGridView1.Columns[4].Width = 130;
-            dataGridView1.Columns[5].Width = 105;
-            dataGridView1.Columns[6].Width = 100;
-            // Создание столбцов во второй таблице
-            dataGridView2.Columns.Add("Column1", "Персонаж");
-            dataGridView2.Columns.Add("Column2", $"{firstEnemyStr}");
-            dataGridView2.Columns.Add("Column3", $"{secondEnemyStr}");
-            dataGridView2.Columns.Add("Column4", $"{thirdEnemyStr}");
-            dataGridView2.Columns.Add("Column5", $"{fourthEnemyStr}");
-            dataGridView2.Columns.Add("Column6", "Суммарный Disadventage");
-            dataGridView2.Columns.Add("Column7", "Суммарный Winrate");
-            // Настройка ширины столбцов во второй таблице
-            dataGridView2.Columns[0].Width = 130;
-            dataGridView2.Columns[1].Width = 130;
-            dataGridView2.Columns[2].Width = 130;
-            dataGridView2.Columns[3].Width = 130;
-            dataGridView2.Columns[4].Width = 130;
-            dataGridView2.Columns[5].Width = 105;
-            dataGridView2.Columns[6].Width = 100;
+            Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
+            try
+            {
+                result = Parser.CharacterStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            // Создание первой таблицы
+            DataGreedViewCreator(dataGridView1, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
+            // Создание второй таблицы
+            DataGreedViewCreator(dataGridView2, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr);
 
             // Заполнение первой таблицы
             foreach (var character in result)
             {
                 // Создание строки и добавление ячеек со значениями
                 DataGridViewRow row = new DataGridViewRow();
-
+            
                 DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
                 keyCell.Value = character.Key; // Значение ключа словаря
                 row.Cells.Add(keyCell);
-
+            
                 foreach (var value in character.Value)
                 {
                     DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                     cell.Value = value;
                     row.Cells.Add(cell);
                 }
-
+            
                 dataGridView1.Rows.Add(row);
             }
 
