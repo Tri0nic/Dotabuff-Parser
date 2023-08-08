@@ -40,7 +40,10 @@
             button2 = new Button();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            comboBox5 = new ComboBox();
             tabPage2 = new TabPage();
+            button4 = new Button();
+            comboBox11 = new ComboBox();
             label6 = new Label();
             label8 = new Label();
             label7 = new Label();
@@ -54,7 +57,6 @@
             comboBox6 = new ComboBox();
             button3 = new Button();
             dataGridView3 = new DataGridView();
-            comboBox5 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabControl1.SuspendLayout();
@@ -188,8 +190,18 @@
             tabPage1.Text = "Анализ статистики";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // comboBox5
+            // 
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(933, 337);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(163, 23);
+            comboBox5.TabIndex = 12;
+            // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(button4);
+            tabPage2.Controls.Add(comboBox11);
             tabPage2.Controls.Add(label6);
             tabPage2.Controls.Add(label8);
             tabPage2.Controls.Add(label7);
@@ -210,6 +222,25 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Добление героя в избранное";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button4.Location = new Point(933, 411);
+            button4.Name = "button4";
+            button4.Size = new Size(163, 46);
+            button4.TabIndex = 24;
+            button4.Text = "Очистить";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click_1;
+            // 
+            // comboBox11
+            // 
+            comboBox11.FormattingEnabled = true;
+            comboBox11.Location = new Point(778, 478);
+            comboBox11.Name = "comboBox11";
+            comboBox11.Size = new Size(143, 23);
+            comboBox11.TabIndex = 23;
             // 
             // label6
             // 
@@ -268,7 +299,7 @@
             // comboBox10
             // 
             comboBox10.FormattingEnabled = true;
-            comboBox10.Location = new Point(778, 478);
+            comboBox10.Location = new Point(629, 478);
             comboBox10.Name = "comboBox10";
             comboBox10.Size = new Size(143, 23);
             comboBox10.TabIndex = 16;
@@ -276,7 +307,7 @@
             // comboBox9
             // 
             comboBox9.FormattingEnabled = true;
-            comboBox9.Location = new Point(629, 478);
+            comboBox9.Location = new Point(480, 478);
             comboBox9.Name = "comboBox9";
             comboBox9.Size = new Size(143, 23);
             comboBox9.TabIndex = 15;
@@ -284,7 +315,7 @@
             // comboBox8
             // 
             comboBox8.FormattingEnabled = true;
-            comboBox8.Location = new Point(480, 478);
+            comboBox8.Location = new Point(331, 478);
             comboBox8.Name = "comboBox8";
             comboBox8.Size = new Size(143, 23);
             comboBox8.TabIndex = 14;
@@ -292,7 +323,7 @@
             // comboBox7
             // 
             comboBox7.FormattingEnabled = true;
-            comboBox7.Location = new Point(331, 478);
+            comboBox7.Location = new Point(182, 478);
             comboBox7.Name = "comboBox7";
             comboBox7.Size = new Size(143, 23);
             comboBox7.TabIndex = 13;
@@ -300,9 +331,9 @@
             // comboBox6
             // 
             comboBox6.FormattingEnabled = true;
-            comboBox6.Location = new Point(182, 478);
+            comboBox6.Location = new Point(6, 478);
             comboBox6.Name = "comboBox6";
-            comboBox6.Size = new Size(143, 23);
+            comboBox6.Size = new Size(170, 23);
             comboBox6.TabIndex = 12;
             // 
             // button3
@@ -314,6 +345,7 @@
             button3.TabIndex = 10;
             button3.Text = "Добавить";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // dataGridView3
             // 
@@ -323,14 +355,6 @@
             dataGridView3.RowTemplate.Height = 25;
             dataGridView3.Size = new Size(915, 387);
             dataGridView3.TabIndex = 9;
-            // 
-            // comboBox5
-            // 
-            comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(933, 337);
-            comboBox5.Name = "comboBox5";
-            comboBox5.Size = new Size(163, 23);
-            comboBox5.TabIndex = 12;
             // 
             // Form1
             // 
@@ -380,5 +404,7 @@
         private Button button3;
         private Label label6;
         private ComboBox comboBox5;
+        private ComboBox comboBox11;
+        private Button button4;
     }
 }

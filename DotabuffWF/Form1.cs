@@ -1,4 +1,5 @@
 using Dotabuff_Parser;
+using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace DotabuffWF
@@ -9,6 +10,7 @@ namespace DotabuffWF
         {
             InitializeComponent();
             InitializeComboBox();
+            InitializeJsonData();
         }
 
         /// <summary>
@@ -158,6 +160,14 @@ namespace DotabuffWF
             comboBox3.DataSource = new List<string>(Characters.characters);
             comboBox4.DataSource = new List<string>(Characters.characters);
             comboBox5.DataSource = new List<string>(Characters.characters);
+            comboBox6.DataSource = new List<string>(Characters.characters);
+
+            // Привязка + к ComboBox
+            comboBox7.DataSource = new List<string>() { "+" };
+            comboBox8.DataSource = new List<string>() { "+" };
+            comboBox9.DataSource = new List<string>() { "+" };
+            comboBox10.DataSource = new List<string>() { "+" };
+            comboBox11.DataSource = new List<string>() { "+" };
             // Очистка comboBox
             ComboBoxClear();
         }
@@ -172,6 +182,11 @@ namespace DotabuffWF
             // Очистка comboBox
             ComboBoxClear();
         }
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            // Очистка comboBox
+            ComboBoxClear();
+        }
         // Очистка comboBox
         public void ComboBoxClear()
         {
@@ -180,6 +195,106 @@ namespace DotabuffWF
             comboBox3.SelectedIndex = -1;
             comboBox4.SelectedIndex = -1;
             comboBox5.SelectedIndex = -1;
+            comboBox6.SelectedIndex = -1;
+            comboBox7.SelectedIndex = -1;
+            comboBox8.SelectedIndex = -1;
+            comboBox9.SelectedIndex = -1;
+            comboBox10.SelectedIndex = -1;
+            comboBox11.SelectedIndex = -1;
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // Очистить DataGridView перед заполнением новыми данными
+            dataGridView3.Rows.Clear();
+            dataGridView3.Columns.Clear();
+
+            // Преобразование персонажа из comboBox в string
+            string? heroStr = comboBox6.SelectedItem?.ToString();
+            string? firstPozitionStr = comboBox7.SelectedItem?.ToString();
+            string? secondPozitionStr = comboBox8.SelectedItem?.ToString();
+            string? thirdPozitionStr = comboBox9.SelectedItem?.ToString();
+            string? fourthPozitionStr = comboBox10.SelectedItem?.ToString();
+            string? fifthPozitionStr = comboBox11.SelectedItem?.ToString();
+        }
+        private void InitializeJsonData()
+        {
+            // Создание столбцов в таблице
+            dataGridView3.Columns.Add("Column1", "Персонаж");
+            dataGridView3.Columns.Add("Column2", $"Первая позиция");
+            dataGridView3.Columns.Add("Column3", $"Вторая позиция");
+            dataGridView3.Columns.Add("Column4", $"Третья позиция");
+            dataGridView3.Columns.Add("Column5", $"Четвертая позиция");
+            dataGridView3.Columns.Add("Column6", $"Пятая позиция");
+            //dataGridView3.Columns.Add("Column7", "Суммарный Disadventage");
+            //dataGridView3.Columns.Add("Column8", "Суммарный Winrate");
+
+            // Настройка ширины столбцов в таблице
+            dataGridView3.Columns[0].Width = 130;
+            dataGridView3.Columns[1].Width = 100;
+            dataGridView3.Columns[2].Width = 100;
+            dataGridView3.Columns[3].Width = 100;
+            dataGridView3.Columns[4].Width = 100;
+            dataGridView3.Columns[5].Width = 100;
+
+            // Десериализация или создание JSON файла
+            Dictionary<string, List<string>> heroPositions = new Dictionary<string, List<string>>();
+            string ProductsFileName = "YoursHeroes.json";
+            try
+            {
+                using (var file = new StreamReader(ProductsFileName))
+                {
+                    string jsonData = file.ReadToEnd();
+
+                    //if (string.IsNullOrWhiteSpace(jsonData)) // Если файл окажется пустым
+                    //{
+                    //    heroPositions = new List<string>();
+                    //}
+                    // Десериализация списка
+                    if (JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData) is Dictionary<string, List<string>> realHeroPositions)
+                    {
+                        heroPositions = realHeroPositions;
+                    }
+                    //else
+                    //{
+                    //    heroPositions = new List<string>();
+                    //}
+                }
+            }
+            catch (System.IO.FileNotFoundException ex) // Если файла не существует
+            {
+                //MessageBox.Show(ex.Message);
+
+                // Файл не существует, создаем новый файл
+                using (var file = new StreamWriter(ProductsFileName))
+                {
+                    string emptyJsonData = JsonConvert.SerializeObject(heroPositions, Formatting.Indented);
+                    file.Write(emptyJsonData);
+                }
+            }
+
+            // Заполнение таблицы десериализованными данными
+            foreach (var character in heroPositions)
+            {
+                // Создание строки и добавление ячеек со значениями
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
+                keyCell.Value = character.Key; // Значение ключа словаря
+                row.Cells.Add(keyCell);
+
+                foreach (var value in character.Value)
+                {
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = value;
+                    row.Cells.Add(cell);
+                }
+
+                dataGridView3.Rows.Add(row);
+            }
+            // Сортировка по алфавиту имени персонажа
+            //dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Descending);
+        }
+
     }
 }
