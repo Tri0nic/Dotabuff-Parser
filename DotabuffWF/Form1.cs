@@ -18,7 +18,7 @@ namespace DotabuffWF
         /// <returns></returns>
         public static async Task<Dictionary<string, List<float>>> MakeEnemyDictAsync(string enemyStr)
         {
-            
+
             // —оздание ссылки
             string url = Parser.UrlCreator(enemyStr);
             // ѕарсинг статистики в словарь
@@ -95,18 +95,18 @@ namespace DotabuffWF
             {
                 // —оздание строки и добавление €чеек со значени€ми
                 DataGridViewRow row = new DataGridViewRow();
-            
+
                 DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
                 keyCell.Value = character.Key; // «начение ключа словар€
                 row.Cells.Add(keyCell);
-            
+
                 foreach (var value in character.Value)
                 {
                     DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                     cell.Value = value;
                     row.Cells.Add(cell);
                 }
-            
+
                 dataGridView1.Rows.Add(row);
             }
 
