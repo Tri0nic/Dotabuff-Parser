@@ -90,7 +90,6 @@
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.Size = new Size(915, 249);
             dataGridView1.TabIndex = 0;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // button1
             // 
@@ -144,7 +143,6 @@
             label1.Size = new Size(142, 21);
             label1.TabIndex = 6;
             label1.Text = "Выберите героев";
-            label1.Click += label1_Click;
             // 
             // label2
             // 

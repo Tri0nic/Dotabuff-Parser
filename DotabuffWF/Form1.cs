@@ -142,10 +142,6 @@ namespace DotabuffWF
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
         private void InitializeComboBox()
         {
             // Привязка списка имен героев к ComboBox
@@ -164,11 +160,6 @@ namespace DotabuffWF
             comboBox11.DataSource = new List<string>() { "", "+" };
             // Очистка comboBox
             ComboBoxClear();
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -265,20 +256,7 @@ namespace DotabuffWF
             }
 
             // Сереализация
-            string stringCharacter = JsonConvert.SerializeObject(selectedCharacters);
-            JsonSerializerSettings settings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented,
-                StringEscapeHandling = StringEscapeHandling.Default // Отключаем Unicode-escape
-            };
-            string jsonString = JsonConvert.SerializeObject(selectedCharacters, settings);
-            jsonString = jsonString.Replace("\\", "");
-            jsonString = jsonString.Trim('"');
-            using (var file = new StreamWriter(YoursHeroes, false))
-            {
-                file.Write(jsonString);
-            }
-
+            JSONSerializer();
 
             // Создание и заполнение таблицы десериализованными данными
             DataGridView3Refresher();
@@ -297,7 +275,7 @@ namespace DotabuffWF
 
         private void InitializeJsonData()
         {
-            SelectedHeroesDataGreedViewCreator();
+            //SelectedHeroesDataGreedViewCreator();
 
             // Десериализация или создание JSON файла
             Dictionary<string, List<string>> heroPositions = new Dictionary<string, List<string>>();
@@ -326,26 +304,31 @@ namespace DotabuffWF
             }
 
             // Заполнение таблицы десериализованными данными
-            foreach (var character in heroPositions)
-            {
-                // Создание строки и добавление ячеек со значениями
-                DataGridViewRow row = new DataGridViewRow();
+            //foreach (var character in heroPositions)
+            //{
+            //    // Создание строки и добавление ячеек со значениями
+            //    DataGridViewRow row = new DataGridViewRow();
+            //
+            //    DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
+            //    keyCell.Value = character.Key; // Значение ключа словаря
+            //    row.Cells.Add(keyCell);
+            //
+            //    foreach (var value in character.Value)
+            //    {
+            //        DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+            //        cell.Value = value;
+            //        row.Cells.Add(cell);
+            //    }
+            //
+            //    dataGridView3.Rows.Add(row);
+            //}
 
-                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
-                keyCell.Value = character.Key; // Значение ключа словаря
-                row.Cells.Add(keyCell);
 
-                foreach (var value in character.Value)
-                {
-                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-                    cell.Value = value;
-                    row.Cells.Add(cell);
-                }
+            // Создание и заполнение третьей таблицы десериализованными данными
+            DataGridView3Refresher(heroPositions);
 
-                dataGridView3.Rows.Add(row);
-            }
-            // Сортировка по алфавиту имени персонажа
-            dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
+
+            
         }
 
         private void RadioButtonChanger(RadioButton radioButton, int characterPosition)
@@ -517,6 +500,9 @@ namespace DotabuffWF
                 selectedCharacters.Remove(selectedCharacter);
             }
 
+            // Сохранение изменений в JSON
+            JSONSerializer();
+
             // Создание и заполнение третьей таблицы десериализованными данными
             DataGridView3Refresher();
         }
@@ -531,8 +517,12 @@ namespace DotabuffWF
             // Создание второй таблицы
             SelectedHeroesDataGreedViewCreator();
 
+            int colorRow = 0;
             foreach (var character in selectedCharacters)
             {
+                // Переменные для закраски таблицы
+                List<int> cells = new List<int>();
+                int colorCell = 0;
                 // Создание строки и добавление ячеек со значениями
                 DataGridViewRow row = new DataGridViewRow();
 
@@ -545,9 +535,90 @@ namespace DotabuffWF
                     DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                     cell.Value = value;
                     row.Cells.Add(cell);
+
+                    colorCell++;
+                    if (value == "+")
+                    {
+                        cells.Add(colorCell);
+                    }
                 }
 
                 dataGridView3.Rows.Add(row);
+                foreach (var cell in cells)
+                {
+                    dataGridView3.Rows[colorRow].Cells[cell].Style.BackColor = Color.Green;
+
+                }
+                colorRow++;
+            }
+
+            // Сортировка имени персонажа по алфавиту
+            dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
+        }
+
+        // Создание и заполнение третьей таблицы десериализованными данными (Перегрузка)
+        public void DataGridView3Refresher(Dictionary<string, List<string>> selectedCharacters)
+        {
+            // Очистить DataGridView перед заполнением новыми данными
+            dataGridView3.Rows.Clear();
+            dataGridView3.Columns.Clear();
+
+            // Создание второй таблицы
+            SelectedHeroesDataGreedViewCreator();
+
+            int colorRow = 0;
+            foreach (var character in selectedCharacters)
+            {
+                // Переменные для закраски таблицы
+                List<int> cells = new List<int>();
+                int colorCell = 0;
+                // Создание строки и добавление ячеек со значениями
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
+                keyCell.Value = character.Key; // Значение ключа словаря
+                row.Cells.Add(keyCell);
+
+                foreach (var value in character.Value)
+                {
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = value;
+                    row.Cells.Add(cell);
+
+                    colorCell++;
+                    if (value == "+")
+                    {
+                        cells.Add(colorCell);
+                    }
+                }
+
+                dataGridView3.Rows.Add(row);
+                foreach(var cell in cells)
+                {
+                    dataGridView3.Rows[colorRow].Cells[cell].Style.BackColor = Color.Green;
+
+                }
+                colorRow++;
+            }
+
+            // Сортировка имени персонажа по алфавиту
+            dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
+        }
+        public void JSONSerializer()
+        {
+            // Сереализация
+            string stringCharacter = JsonConvert.SerializeObject(selectedCharacters);
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                StringEscapeHandling = StringEscapeHandling.Default // Отключаем Unicode-escape
+            };
+            string jsonString = JsonConvert.SerializeObject(selectedCharacters, settings);
+            jsonString = jsonString.Replace("\\", "");
+            jsonString = jsonString.Trim('"');
+            using (var file = new StreamWriter(YoursHeroes, false))
+            {
+                file.Write(jsonString);
             }
         }
     }
