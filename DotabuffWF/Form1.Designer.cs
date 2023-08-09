@@ -50,10 +50,16 @@
             radioButton1 = new RadioButton();
             comboBox5 = new ComboBox();
             tabPage2 = new TabPage();
+            label11 = new Label();
+            label10 = new Label();
+            tabControl2 = new TabControl();
+            tabPage3 = new TabPage();
+            button3 = new Button();
+            tabPage4 = new TabPage();
+            button6 = new Button();
             button4 = new Button();
             comboBox11 = new ComboBox();
             label6 = new Label();
-            label8 = new Label();
             label7 = new Label();
             label5 = new Label();
             label4 = new Label();
@@ -63,7 +69,6 @@
             comboBox8 = new ComboBox();
             comboBox7 = new ComboBox();
             comboBox6 = new ComboBox();
-            button3 = new Button();
             dataGridView3 = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -71,6 +76,9 @@
             tabPage1.SuspendLayout();
             groupBox1.SuspendLayout();
             tabPage2.SuspendLayout();
+            tabControl2.SuspendLayout();
+            tabPage3.SuspendLayout();
+            tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView3).BeginInit();
             SuspendLayout();
             // 
@@ -251,7 +259,7 @@
             // radioButton5
             // 
             radioButton5.AutoSize = true;
-            radioButton5.Location = new Point(6, 58);
+            radioButton5.Location = new Point(6, 61);
             radioButton5.Name = "radioButton5";
             radioButton5.Size = new Size(57, 19);
             radioButton5.TabIndex = 22;
@@ -306,10 +314,12 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label11);
+            tabPage2.Controls.Add(label10);
+            tabPage2.Controls.Add(tabControl2);
             tabPage2.Controls.Add(button4);
             tabPage2.Controls.Add(comboBox11);
             tabPage2.Controls.Add(label6);
-            tabPage2.Controls.Add(label8);
             tabPage2.Controls.Add(label7);
             tabPage2.Controls.Add(label5);
             tabPage2.Controls.Add(label4);
@@ -319,7 +329,6 @@
             tabPage2.Controls.Add(comboBox8);
             tabPage2.Controls.Add(comboBox7);
             tabPage2.Controls.Add(comboBox6);
-            tabPage2.Controls.Add(button3);
             tabPage2.Controls.Add(dataGridView3);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
@@ -329,10 +338,84 @@
             tabPage2.Text = "Добление героя в избранное";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label11.Location = new Point(944, 88);
+            label11.Name = "label11";
+            label11.Size = new Size(152, 21);
+            label11.TabIndex = 28;
+            label11.Text = "Выберите позиции";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label10.Location = new Point(945, 24);
+            label10.Name = "label10";
+            label10.Size = new Size(133, 21);
+            label10.TabIndex = 27;
+            label10.Text = "Выберите героя";
+            // 
+            // tabControl2
+            // 
+            tabControl2.Controls.Add(tabPage3);
+            tabControl2.Controls.Add(tabPage4);
+            tabControl2.Location = new Point(927, 418);
+            tabControl2.Name = "tabControl2";
+            tabControl2.SelectedIndex = 0;
+            tabControl2.Size = new Size(177, 83);
+            tabControl2.TabIndex = 26;
+            // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(button3);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(169, 55);
+            tabPage3.TabIndex = 0;
+            tabPage3.Text = "Добавление";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button3.Location = new Point(3, 6);
+            button3.Name = "button3";
+            button3.Size = new Size(163, 46);
+            button3.TabIndex = 10;
+            button3.Text = "Добавить";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // tabPage4
+            // 
+            tabPage4.Controls.Add(button6);
+            tabPage4.Location = new Point(4, 24);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(169, 55);
+            tabPage4.TabIndex = 1;
+            tabPage4.Text = "Удаление";
+            tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            button6.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button6.Location = new Point(3, 6);
+            button6.Name = "button6";
+            button6.Size = new Size(163, 46);
+            button6.TabIndex = 25;
+            button6.Text = "Удалить";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
+            // 
             // button4
             // 
             button4.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button4.Location = new Point(933, 411);
+            button4.Location = new Point(934, 349);
             button4.Name = "button4";
             button4.Size = new Size(163, 46);
             button4.TabIndex = 24;
@@ -343,115 +426,95 @@
             // comboBox11
             // 
             comboBox11.FormattingEnabled = true;
-            comboBox11.Location = new Point(778, 478);
+            comboBox11.Location = new Point(933, 315);
             comboBox11.Name = "comboBox11";
-            comboBox11.Size = new Size(143, 23);
+            comboBox11.Size = new Size(163, 23);
             comboBox11.TabIndex = 23;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(537, 460);
+            label6.Location = new Point(985, 253);
             label6.Name = "label6";
-            label6.Size = new Size(38, 15);
+            label6.Size = new Size(62, 15);
             label6.TabIndex = 22;
-            label6.Text = "label6";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(834, 460);
-            label8.Name = "label8";
-            label8.Size = new Size(38, 15);
-            label8.TabIndex = 21;
-            label8.Text = "label8";
+            label6.Text = "Четвертая";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(682, 460);
+            label7.Location = new Point(997, 297);
             label7.Name = "label7";
-            label7.Size = new Size(38, 15);
+            label7.Size = new Size(39, 15);
             label7.TabIndex = 20;
-            label7.Text = "label6";
+            label7.Text = "Пятая";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(384, 460);
+            label5.Location = new Point(993, 209);
             label5.Name = "label5";
-            label5.Size = new Size(38, 15);
+            label5.Size = new Size(43, 15);
             label5.TabIndex = 19;
-            label5.Text = "label5";
+            label5.Text = "Третья";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(236, 460);
+            label4.Location = new Point(991, 160);
             label4.Name = "label4";
-            label4.Size = new Size(38, 15);
+            label4.Size = new Size(45, 15);
             label4.TabIndex = 18;
-            label4.Text = "label4";
+            label4.Text = "Вторая";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(74, 460);
+            label3.Location = new Point(991, 116);
             label3.Name = "label3";
-            label3.Size = new Size(38, 15);
+            label3.Size = new Size(47, 15);
             label3.TabIndex = 17;
-            label3.Text = "label3";
+            label3.Text = "Первая";
             // 
             // comboBox10
             // 
             comboBox10.FormattingEnabled = true;
-            comboBox10.Location = new Point(629, 478);
+            comboBox10.Location = new Point(933, 271);
             comboBox10.Name = "comboBox10";
-            comboBox10.Size = new Size(143, 23);
+            comboBox10.Size = new Size(163, 23);
             comboBox10.TabIndex = 16;
             // 
             // comboBox9
             // 
             comboBox9.FormattingEnabled = true;
-            comboBox9.Location = new Point(480, 478);
+            comboBox9.Location = new Point(933, 227);
             comboBox9.Name = "comboBox9";
-            comboBox9.Size = new Size(143, 23);
+            comboBox9.Size = new Size(163, 23);
             comboBox9.TabIndex = 15;
             // 
             // comboBox8
             // 
             comboBox8.FormattingEnabled = true;
-            comboBox8.Location = new Point(331, 478);
+            comboBox8.Location = new Point(931, 180);
             comboBox8.Name = "comboBox8";
-            comboBox8.Size = new Size(143, 23);
+            comboBox8.Size = new Size(163, 23);
             comboBox8.TabIndex = 14;
             // 
             // comboBox7
             // 
             comboBox7.FormattingEnabled = true;
-            comboBox7.Location = new Point(182, 478);
+            comboBox7.Location = new Point(933, 134);
             comboBox7.Name = "comboBox7";
-            comboBox7.Size = new Size(143, 23);
+            comboBox7.Size = new Size(163, 23);
             comboBox7.TabIndex = 13;
             // 
             // comboBox6
             // 
             comboBox6.FormattingEnabled = true;
-            comboBox6.Location = new Point(6, 478);
+            comboBox6.Location = new Point(934, 48);
             comboBox6.Name = "comboBox6";
-            comboBox6.Size = new Size(170, 23);
+            comboBox6.Size = new Size(163, 23);
             comboBox6.TabIndex = 12;
-            // 
-            // button3
-            // 
-            button3.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button3.Location = new Point(933, 463);
-            button3.Name = "button3";
-            button3.Size = new Size(163, 46);
-            button3.TabIndex = 10;
-            button3.Text = "Добавить";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // dataGridView3
             // 
@@ -459,7 +522,7 @@
             dataGridView3.Location = new Point(6, 8);
             dataGridView3.Name = "dataGridView3";
             dataGridView3.RowTemplate.Height = 25;
-            dataGridView3.Size = new Size(915, 387);
+            dataGridView3.Size = new Size(915, 500);
             dataGridView3.TabIndex = 9;
             // 
             // Form1
@@ -479,6 +542,9 @@
             groupBox1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            tabControl2.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
+            tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView3).EndInit();
             ResumeLayout(false);
         }
@@ -499,7 +565,6 @@
         private TabPage tabPage1;
         private TabPage tabPage2;
         private DataGridView dataGridView3;
-        private Label label8;
         private Label label7;
         private Label label5;
         private Label label4;
@@ -522,5 +587,11 @@
         private RadioButton radioButton3;
         private Label label9;
         private Button button5;
+        private TabControl tabControl2;
+        private TabPage tabPage3;
+        private TabPage tabPage4;
+        private Button button6;
+        private Label label11;
+        private Label label10;
     }
 }

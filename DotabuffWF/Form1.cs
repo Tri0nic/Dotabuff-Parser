@@ -42,7 +42,6 @@ namespace DotabuffWF
         /// Создание словарей со статистикой с выбранными персонажами из ComboBox
         /// </summary>
         /// <param name="character">Имя персонажа</param>
-        /// <returns></returns>
         public static async Task<Dictionary<string, List<float>>> MakeEnemyDictAsync(string enemyStr)
         {
 
@@ -56,11 +55,6 @@ namespace DotabuffWF
         /// <summary>
         /// Создание и настройка таблицы
         /// </summary>
-        /// <param name="table"></param>
-        /// <param name="firstEnemyStr"></param>
-        /// <param name="secondEnemyStr"></param>
-        /// <param name="thirdEnemyStr"></param>
-        /// <param name="fourthEnemyStr"></param>
         public static void DataGreedViewCreator(DataGridView table, string firstEnemyStr, string secondEnemyStr, string thirdEnemyStr, string fourthEnemyStr, string fifthEnemyStr)
         {
             // Создание столбцов в первой таблице
@@ -81,7 +75,28 @@ namespace DotabuffWF
             table.Columns[4].Width = 104;
             table.Columns[5].Width = 104;
             table.Columns[6].Width = 105;
+        }
 
+        /// <summary>
+        /// Добавление столбцов в третью таблицу
+        /// </summary>
+        public void SelectedHeroesDataGreedViewCreator()
+        {
+            // Создание столбцов в таблице
+            dataGridView3.Columns.Add("Column1", "Персонаж");
+            dataGridView3.Columns.Add("Column2", $"Первая позиция");
+            dataGridView3.Columns.Add("Column3", $"Вторая позиция");
+            dataGridView3.Columns.Add("Column4", $"Третья позиция");
+            dataGridView3.Columns.Add("Column5", $"Четвертая позиция");
+            dataGridView3.Columns.Add("Column6", $"Пятая позиция");
+
+            // Настройка ширины столбцов в таблице
+            dataGridView3.Columns[0].Width = 130;
+            dataGridView3.Columns[1].Width = 100;
+            dataGridView3.Columns[2].Width = 100;
+            dataGridView3.Columns[3].Width = 100;
+            dataGridView3.Columns[4].Width = 100;
+            dataGridView3.Columns[5].Width = 100;
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -198,28 +213,6 @@ namespace DotabuffWF
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // Очистить DataGridView перед заполнением новыми данными
-            dataGridView3.Rows.Clear();
-            dataGridView3.Columns.Clear();
-
-            // Создание столбцов в таблице
-            dataGridView3.Columns.Add("Column1", "Персонаж");
-            dataGridView3.Columns.Add("Column2", $"Первая позиция");
-            dataGridView3.Columns.Add("Column3", $"Вторая позиция");
-            dataGridView3.Columns.Add("Column4", $"Третья позиция");
-            dataGridView3.Columns.Add("Column5", $"Четвертая позиция");
-            dataGridView3.Columns.Add("Column6", $"Пятая позиция");
-            //dataGridView3.Columns.Add("Column7", "Суммарный Disadventage");
-            //dataGridView3.Columns.Add("Column8", "Суммарный Winrate");
-
-            // Настройка ширины столбцов в таблице
-            dataGridView3.Columns[0].Width = 130;
-            dataGridView3.Columns[1].Width = 100;
-            dataGridView3.Columns[2].Width = 100;
-            dataGridView3.Columns[3].Width = 100;
-            dataGridView3.Columns[4].Width = 100;
-            dataGridView3.Columns[5].Width = 100;
-
             // Преобразование персонажа из comboBox в string
             string? heroStr = comboBox6.SelectedItem?.ToString();
             string? firstPozitionStr = comboBox7.SelectedItem?.ToString();
@@ -248,25 +241,15 @@ namespace DotabuffWF
                 {
                     string jsonData = file.ReadToEnd();
 
-                    //if (string.IsNullOrWhiteSpace(jsonData)) // Если файл окажется пустым
-                    //{
-                    //    heroPositions = new List<string>();
-                    //}
                     // Десериализация списка
                     if (JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData) is Dictionary<string, List<string>> realHeroPositions)
                     {
                         selectedCharacters = realHeroPositions;
                     }
-                    //else
-                    //{
-                    //    heroPositions = new List<string>();
-                    //}
                 }
             }
             catch // Если файла не существует
             {
-                //MessageBox.Show(ex.Message);
-
                 // Файл не существует, создаем новый файл
                 using (var file = new StreamWriter(YoursHeroes))
                 {
@@ -297,25 +280,8 @@ namespace DotabuffWF
             }
 
 
-            // Заполнение таблицы десериализованными данными
-            foreach (var character in selectedCharacters)
-            {
-                // Создание строки и добавление ячеек со значениями
-                DataGridViewRow row = new DataGridViewRow();
-
-                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
-                keyCell.Value = character.Key; // Значение ключа словаря
-                row.Cells.Add(keyCell);
-
-                foreach (var value in character.Value)
-                {
-                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-                    cell.Value = value;
-                    row.Cells.Add(cell);
-                }
-
-                dataGridView3.Rows.Add(row);
-            }
+            // Создание и заполнение таблицы десериализованными данными
+            DataGridView3Refresher();
 
             // Сортировка по алфавиту имени персонажа
             dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
@@ -331,23 +297,7 @@ namespace DotabuffWF
 
         private void InitializeJsonData()
         {
-            // Создание столбцов в таблице
-            dataGridView3.Columns.Add("Column1", "Персонаж");
-            dataGridView3.Columns.Add("Column2", $"Первая позиция");
-            dataGridView3.Columns.Add("Column3", $"Вторая позиция");
-            dataGridView3.Columns.Add("Column4", $"Третья позиция");
-            dataGridView3.Columns.Add("Column5", $"Четвертая позиция");
-            dataGridView3.Columns.Add("Column6", $"Пятая позиция");
-            //dataGridView3.Columns.Add("Column7", "Суммарный Disadventage");
-            //dataGridView3.Columns.Add("Column8", "Суммарный Winrate");
-
-            // Настройка ширины столбцов в таблице
-            dataGridView3.Columns[0].Width = 130;
-            dataGridView3.Columns[1].Width = 100;
-            dataGridView3.Columns[2].Width = 100;
-            dataGridView3.Columns[3].Width = 100;
-            dataGridView3.Columns[4].Width = 100;
-            dataGridView3.Columns[5].Width = 100;
+            SelectedHeroesDataGreedViewCreator();
 
             // Десериализация или создание JSON файла
             Dictionary<string, List<string>> heroPositions = new Dictionary<string, List<string>>();
@@ -358,25 +308,15 @@ namespace DotabuffWF
                 {
                     string jsonData = file.ReadToEnd();
 
-                    //if (string.IsNullOrWhiteSpace(jsonData)) // Если файл окажется пустым
-                    //{
-                    //    heroPositions = new List<string>();
-                    //}
                     // Десериализация списка
                     if (JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData) is Dictionary<string, List<string>> realHeroPositions)
                     {
                         heroPositions = realHeroPositions;
                     }
-                    //else
-                    //{
-                    //    heroPositions = new List<string>();
-                    //}
                 }
             }
             catch (System.IO.FileNotFoundException ex) // Если файла не существует
             {
-                //MessageBox.Show(ex.Message);
-
                 // Файл не существует, создаем новый файл
                 using (var file = new StreamWriter(ProductsFileName))
                 {
@@ -565,6 +505,50 @@ namespace DotabuffWF
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
         {
             RadioButtonChanger(radioButton5, 4);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string selectedCharacter = comboBox6.SelectedItem?.ToString();
+
+            // Удаление
+            if (selectedCharacters.ContainsKey(selectedCharacter))
+            {
+                selectedCharacters.Remove(selectedCharacter);
+            }
+
+            // Создание и заполнение третьей таблицы десериализованными данными
+            DataGridView3Refresher();
+        }
+
+        // Создание и заполнение третьей таблицы десериализованными данными
+        public void DataGridView3Refresher()
+        {
+            // Очистить DataGridView перед заполнением новыми данными
+            dataGridView3.Rows.Clear();
+            dataGridView3.Columns.Clear();
+
+            // Создание второй таблицы
+            SelectedHeroesDataGreedViewCreator();
+
+            foreach (var character in selectedCharacters)
+            {
+                // Создание строки и добавление ячеек со значениями
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
+                keyCell.Value = character.Key; // Значение ключа словаря
+                row.Cells.Add(keyCell);
+
+                foreach (var value in character.Value)
+                {
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = value;
+                    row.Cells.Add(cell);
+                }
+
+                dataGridView3.Rows.Add(row);
+            }
         }
     }
 }
