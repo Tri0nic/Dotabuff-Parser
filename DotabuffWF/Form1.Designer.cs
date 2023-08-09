@@ -40,6 +40,14 @@
             button2 = new Button();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            label9 = new Label();
+            button5 = new Button();
+            groupBox1 = new GroupBox();
+            radioButton2 = new RadioButton();
+            radioButton5 = new RadioButton();
+            radioButton4 = new RadioButton();
+            radioButton3 = new RadioButton();
+            radioButton1 = new RadioButton();
             comboBox5 = new ComboBox();
             tabPage2 = new TabPage();
             button4 = new Button();
@@ -61,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            groupBox1.SuspendLayout();
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView3).BeginInit();
             SuspendLayout();
@@ -89,7 +98,7 @@
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(933, 108);
+            comboBox1.Location = new Point(933, 65);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(163, 23);
             comboBox1.TabIndex = 2;
@@ -97,7 +106,7 @@
             // comboBox2
             // 
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(933, 164);
+            comboBox2.Location = new Point(933, 94);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(163, 23);
             comboBox2.TabIndex = 3;
@@ -105,7 +114,7 @@
             // comboBox3
             // 
             comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(933, 223);
+            comboBox3.Location = new Point(933, 123);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(163, 23);
             comboBox3.TabIndex = 4;
@@ -113,7 +122,7 @@
             // comboBox4
             // 
             comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(933, 280);
+            comboBox4.Location = new Point(933, 152);
             comboBox4.Name = "comboBox4";
             comboBox4.Size = new Size(163, 23);
             comboBox4.TabIndex = 5;
@@ -122,7 +131,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(942, 52);
+            label1.Location = new Point(942, 9);
             label1.Name = "label1";
             label1.Size = new Size(142, 21);
             label1.TabIndex = 6;
@@ -133,7 +142,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(964, 73);
+            label2.Location = new Point(964, 30);
             label2.Name = "label2";
             label2.Size = new Size(99, 21);
             label2.TabIndex = 7;
@@ -171,6 +180,9 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(label9);
+            tabPage1.Controls.Add(button5);
+            tabPage1.Controls.Add(groupBox1);
             tabPage1.Controls.Add(comboBox5);
             tabPage1.Controls.Add(button1);
             tabPage1.Controls.Add(dataGridView2);
@@ -190,10 +202,104 @@
             tabPage1.Text = "Анализ статистики";
             tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label9.Location = new Point(941, 295);
+            label9.Name = "label9";
+            label9.Size = new Size(155, 21);
+            label9.TabIndex = 21;
+            label9.Text = "Выберите позицию";
+            // 
+            // button5
+            // 
+            button5.Font = new Font("Microsoft PhagsPa", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            button5.Location = new Point(933, 211);
+            button5.Name = "button5";
+            button5.Size = new Size(163, 46);
+            button5.TabIndex = 20;
+            button5.Text = "Очистить";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(radioButton2);
+            groupBox1.Controls.Add(radioButton5);
+            groupBox1.Controls.Add(radioButton4);
+            groupBox1.Controls.Add(radioButton3);
+            groupBox1.Controls.Add(radioButton1);
+            groupBox1.Location = new Point(933, 319);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(163, 85);
+            groupBox1.TabIndex = 19;
+            groupBox1.TabStop = false;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(79, 11);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(63, 19);
+            radioButton2.TabIndex = 19;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "Вторая";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
+            // 
+            // radioButton5
+            // 
+            radioButton5.AutoSize = true;
+            radioButton5.Location = new Point(6, 58);
+            radioButton5.Name = "radioButton5";
+            radioButton5.Size = new Size(57, 19);
+            radioButton5.TabIndex = 22;
+            radioButton5.TabStop = true;
+            radioButton5.Text = "Пятая";
+            radioButton5.UseVisualStyleBackColor = true;
+            radioButton5.CheckedChanged += radioButton5_CheckedChanged;
+            // 
+            // radioButton4
+            // 
+            radioButton4.AutoSize = true;
+            radioButton4.Location = new Point(79, 36);
+            radioButton4.Name = "radioButton4";
+            radioButton4.Size = new Size(80, 19);
+            radioButton4.TabIndex = 21;
+            radioButton4.TabStop = true;
+            radioButton4.Text = "Четвертая";
+            radioButton4.UseVisualStyleBackColor = true;
+            radioButton4.CheckedChanged += radioButton4_CheckedChanged;
+            // 
+            // radioButton3
+            // 
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(6, 36);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(61, 19);
+            radioButton3.TabIndex = 20;
+            radioButton3.TabStop = true;
+            radioButton3.Text = "Третья";
+            radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.CheckedChanged += radioButton3_CheckedChanged;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(6, 11);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(65, 19);
+            radioButton1.TabIndex = 18;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "Первая";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
+            // 
             // comboBox5
             // 
             comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(933, 337);
+            comboBox5.Location = new Point(933, 181);
             comboBox5.Name = "comboBox5";
             comboBox5.Size = new Size(163, 23);
             comboBox5.TabIndex = 12;
@@ -369,6 +475,8 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView3).EndInit();
@@ -406,5 +514,13 @@
         private ComboBox comboBox5;
         private ComboBox comboBox11;
         private Button button4;
+        private GroupBox groupBox1;
+        private RadioButton radioButton2;
+        private RadioButton radioButton1;
+        private RadioButton radioButton5;
+        private RadioButton radioButton4;
+        private RadioButton radioButton3;
+        private Label label9;
+        private Button button5;
     }
 }

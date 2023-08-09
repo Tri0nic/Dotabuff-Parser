@@ -6,11 +6,36 @@ namespace DotabuffWF
 {
     public partial class Form1 : Form
     {
+        private const string YoursHeroes = "YoursHeroes.json";
+        private static Dictionary<string, List<string>> selectedCharacters;
+        private string? firstEnemyStr;
+        private string? secondEnemyStr;
+        private string? thirdEnemyStr;
+        private string? fourthEnemyStr;
+        private string? fifthEnemyStr;
+        public static void Deser3Table()
+        {
+            using (var file = new StreamReader(YoursHeroes))
+            {
+                string jsonData = file.ReadToEnd();
+
+                // Десериализация списка
+                if (JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData) is Dictionary<string, List<string>> realHeroPositions)
+                {
+                    selectedCharacters = realHeroPositions;
+                }
+                else
+                {
+                    selectedCharacters = new Dictionary<string, List<string>>();
+                }
+            }
+        }
         public Form1()
         {
             InitializeComponent();
             InitializeComboBox();
             InitializeJsonData();
+            Deser3Table();
         }
 
         /// <summary>
@@ -61,18 +86,13 @@ namespace DotabuffWF
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            // Очистить DataGridView перед заполнением новыми данными
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-            dataGridView2.Rows.Clear();
-            dataGridView2.Columns.Clear();
-
+            #region Получение данные персонажа
             // Преобразование персонажа из comboBox в string
-            string? firstEnemyStr = comboBox1.SelectedItem?.ToString();
-            string? secondEnemyStr = comboBox2.SelectedItem?.ToString();
-            string? thirdEnemyStr = comboBox3.SelectedItem?.ToString();
-            string? fourthEnemyStr = comboBox4.SelectedItem?.ToString();
-            string? fifthEnemyStr = comboBox5.SelectedItem?.ToString();
+            firstEnemyStr = comboBox1.SelectedItem?.ToString();
+            secondEnemyStr = comboBox2.SelectedItem?.ToString();
+            thirdEnemyStr = comboBox3.SelectedItem?.ToString();
+            fourthEnemyStr = comboBox4.SelectedItem?.ToString();
+            fifthEnemyStr = comboBox5.SelectedItem?.ToString();
 
             // Создание словарей со статистикой
             Dictionary<string, List<float>> firstEnemy = await MakeEnemyDictAsync(firstEnemyStr);
@@ -91,61 +111,20 @@ namespace DotabuffWF
             {
                 MessageBox.Show(ex.Message);
             }
-            // Создание первой таблицы
-            DataGreedViewCreator(dataGridView1, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
-            // Создание второй таблицы
-            DataGreedViewCreator(dataGridView2, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+            #endregion
 
             // Заполнение первой таблицы
-            foreach (var character in result)
-            {
-                // Создание строки и добавление ячеек со значениями
-                DataGridViewRow row = new DataGridViewRow();
-
-                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
-                keyCell.Value = character.Key; // Значение ключа словаря
-                row.Cells.Add(keyCell);
-
-                foreach (var value in character.Value)
-                {
-                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-                    cell.Value = value;
-                    row.Cells.Add(cell);
-                }
-
-                dataGridView1.Rows.Add(row);
-            }
-
-            // TODO: сделать запись в JSON и добавление персонажей через Windows Forms
-            // Список избранных персонажей
-            List<string> selectedCharacters = new List<string>() { "spirit breaker", "techies", "clinkz", "snapfire",
-                "meepo", "zeus", "legion commander", "timbersaw", "ogre magi", "lich", "crystal maiden", "undying",
-                "witch doctor", "sand king", "dark seer", "juggernaut", "phantom assasin", "anti-mage" };
-
+            DataGridView1Refresher(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, fifthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
             // Заполнение второй таблицы
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                // Проверяем значение в первом столбце
-                foreach (string character in selectedCharacters)
-                {
-                    if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == character)
-                    {
-                        // Создаем новую строку и копируем ячейки из строки первого DataGridView
-                        DataGridViewRow newRow = (DataGridViewRow)row.Clone();
-                        for (int i = 0; i < row.Cells.Count; i++)
-                        {
-                            newRow.Cells[i].Value = row.Cells[i].Value;
-                        }
+            DataGridView2Refresher();
 
-                        // Добавляем новую строку во второй DataGridView
-                        dataGridView2.Rows.Add(newRow);
-                    }
-                }
-            }
+            // Обновление второй таблицы в соответствии с выбранными позициями 
+            RadioButtonChanger(radioButton1, 0);
+            RadioButtonChanger(radioButton2, 1);
+            RadioButtonChanger(radioButton3, 2);
+            RadioButtonChanger(radioButton4, 3);
+            RadioButtonChanger(radioButton5, 4);
 
-            // Сортировка по столбцу с суммарным Disadventage
-            dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Descending);
-            dataGridView2.Sort(dataGridView2.Columns[6], ListSortDirection.Descending);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -163,11 +142,11 @@ namespace DotabuffWF
             comboBox6.DataSource = new List<string>(Characters.characters);
 
             // Привязка + к ComboBox
-            comboBox7.DataSource = new List<string>() { "+" };
-            comboBox8.DataSource = new List<string>() { "+" };
-            comboBox9.DataSource = new List<string>() { "+" };
-            comboBox10.DataSource = new List<string>() { "+" };
-            comboBox11.DataSource = new List<string>() { "+" };
+            comboBox7.DataSource = new List<string>() { "", "+" };
+            comboBox8.DataSource = new List<string>() { "", "+" };
+            comboBox9.DataSource = new List<string>() { "", "+" };
+            comboBox10.DataSource = new List<string>() { "", "+" };
+            comboBox11.DataSource = new List<string>() { "", "+" };
             // Очистка comboBox
             ComboBoxClear();
         }
@@ -179,8 +158,11 @@ namespace DotabuffWF
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // Очистка comboBox
-            ComboBoxClear();
+            // Очистка RadioButton
+            RadioButtonClear();
+
+            // Обновление второй таблицы
+            DataGridView2Refresher();
         }
         private void button4_Click_1(object sender, EventArgs e)
         {
@@ -203,11 +185,40 @@ namespace DotabuffWF
             comboBox11.SelectedIndex = -1;
         }
 
+        // Очистка RadioButton
+        public void RadioButtonClear()
+        {
+            radioButton1.Checked = false;
+            radioButton2.Checked = false;
+            radioButton3.Checked = false;
+            radioButton4.Checked = false;
+            radioButton5.Checked = false;
+        }
+
+
         private void button3_Click(object sender, EventArgs e)
         {
             // Очистить DataGridView перед заполнением новыми данными
             dataGridView3.Rows.Clear();
             dataGridView3.Columns.Clear();
+
+            // Создание столбцов в таблице
+            dataGridView3.Columns.Add("Column1", "Персонаж");
+            dataGridView3.Columns.Add("Column2", $"Первая позиция");
+            dataGridView3.Columns.Add("Column3", $"Вторая позиция");
+            dataGridView3.Columns.Add("Column4", $"Третья позиция");
+            dataGridView3.Columns.Add("Column5", $"Четвертая позиция");
+            dataGridView3.Columns.Add("Column6", $"Пятая позиция");
+            //dataGridView3.Columns.Add("Column7", "Суммарный Disadventage");
+            //dataGridView3.Columns.Add("Column8", "Суммарный Winrate");
+
+            // Настройка ширины столбцов в таблице
+            dataGridView3.Columns[0].Width = 130;
+            dataGridView3.Columns[1].Width = 100;
+            dataGridView3.Columns[2].Width = 100;
+            dataGridView3.Columns[3].Width = 100;
+            dataGridView3.Columns[4].Width = 100;
+            dataGridView3.Columns[5].Width = 100;
 
             // Преобразование персонажа из comboBox в string
             string? heroStr = comboBox6.SelectedItem?.ToString();
@@ -216,7 +227,108 @@ namespace DotabuffWF
             string? thirdPozitionStr = comboBox9.SelectedItem?.ToString();
             string? fourthPozitionStr = comboBox10.SelectedItem?.ToString();
             string? fifthPozitionStr = comboBox11.SelectedItem?.ToString();
+
+            //Создание словаря
+            Dictionary<string, List<string>> hero = new Dictionary<string, List<string>>();
+            try
+            {
+                hero = new Dictionary<string, List<string>>
+                {{ heroStr, new List<string> { firstPozitionStr, secondPozitionStr, thirdPozitionStr, fourthPozitionStr, fifthPozitionStr } }};
+            }
+            catch
+            {
+                MessageBox.Show("Выберите персонажа");
+            }
+
+            // Десериализация или создание JSON файла
+            //Dictionary<string, List<string>> heroPositions = new Dictionary<string, List<string>>();
+            try
+            {
+                using (var file = new StreamReader(YoursHeroes))
+                {
+                    string jsonData = file.ReadToEnd();
+
+                    //if (string.IsNullOrWhiteSpace(jsonData)) // Если файл окажется пустым
+                    //{
+                    //    heroPositions = new List<string>();
+                    //}
+                    // Десериализация списка
+                    if (JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonData) is Dictionary<string, List<string>> realHeroPositions)
+                    {
+                        selectedCharacters = realHeroPositions;
+                    }
+                    //else
+                    //{
+                    //    heroPositions = new List<string>();
+                    //}
+                }
+            }
+            catch // Если файла не существует
+            {
+                //MessageBox.Show(ex.Message);
+
+                // Файл не существует, создаем новый файл
+                using (var file = new StreamWriter(YoursHeroes))
+                {
+                    string emptyJsonData = JsonConvert.SerializeObject(selectedCharacters, Formatting.Indented);
+                    file.Write(emptyJsonData);
+                }
+            }
+
+            // Добавление в десериализованный словарь новые данные
+            if (hero.Count != 0)
+            {
+                selectedCharacters[hero.Keys.First()] = hero.Values.First();
+            }
+
+            // Сереализация
+            string stringCharacter = JsonConvert.SerializeObject(selectedCharacters);
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                StringEscapeHandling = StringEscapeHandling.Default // Отключаем Unicode-escape
+            };
+            string jsonString = JsonConvert.SerializeObject(selectedCharacters, settings);
+            jsonString = jsonString.Replace("\\", "");
+            jsonString = jsonString.Trim('"');
+            using (var file = new StreamWriter(YoursHeroes, false))
+            {
+                file.Write(jsonString);
+            }
+
+
+            // Заполнение таблицы десериализованными данными
+            foreach (var character in selectedCharacters)
+            {
+                // Создание строки и добавление ячеек со значениями
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
+                keyCell.Value = character.Key; // Значение ключа словаря
+                row.Cells.Add(keyCell);
+
+                foreach (var value in character.Value)
+                {
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = value;
+                    row.Cells.Add(cell);
+                }
+
+                dataGridView3.Rows.Add(row);
+            }
+
+            // Сортировка по алфавиту имени персонажа
+            dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
+
+
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Очистка comboBox
+            ComboBoxClear();
+        }
+
         private void InitializeJsonData()
         {
             // Создание столбцов в таблице
@@ -293,8 +405,166 @@ namespace DotabuffWF
                 dataGridView3.Rows.Add(row);
             }
             // Сортировка по алфавиту имени персонажа
-            //dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Descending);
+            dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
         }
 
+        private void RadioButtonChanger(RadioButton radioButton, int characterPosition)
+        {
+            if (radioButton.Checked)
+            {
+                // Очистить DataGridView перед заполнением новыми данными
+                dataGridView2.Rows.Clear();
+                dataGridView2.Columns.Clear();
+
+                // Создание второй таблицы
+                DataGreedViewCreator(dataGridView2, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+
+
+                // Используем LINQ для выбора элементов с вторым значением списка равным "+"
+                var heroes = selectedCharacters
+                    .Where(kv => kv.Value.Count > characterPosition && kv.Value[characterPosition] == "+")
+                    .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+                // Заполнение второй таблицы
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    // Проверяем значение в первом столбце
+                    foreach (string character in heroes.Keys)
+                    {
+                        if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == character)
+                        {
+                            // Создаем новую строку и копируем ячейки из строки первого DataGridView
+                            DataGridViewRow newRow = (DataGridViewRow)row.Clone();
+                            for (int i = 0; i < row.Cells.Count; i++)
+                            {
+                                newRow.Cells[i].Value = row.Cells[i].Value;
+                            }
+
+                            // Добавляем новую строку во второй DataGridView
+                            dataGridView2.Rows.Add(newRow);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Обновление данных второй таблицы
+        /// </summary>
+        public void DataGridView2Refresher()
+        {
+            // Очистить DataGridView перед заполнением новыми данными
+            dataGridView2.Rows.Clear();
+            dataGridView2.Columns.Clear();
+
+            // Создание второй таблицы
+            DataGreedViewCreator(dataGridView2, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+
+            // Заполнение второй таблицы
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Проверяем значение в первом столбце
+                foreach (string character in selectedCharacters.Keys)
+                {
+                    if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == character)
+                    {
+                        // Создаем новую строку и копируем ячейки из строки первого DataGridView
+                        DataGridViewRow newRow = (DataGridViewRow)row.Clone();
+                        for (int i = 0; i < row.Cells.Count; i++)
+                        {
+                            newRow.Cells[i].Value = row.Cells[i].Value;
+                        }
+
+                        // Добавляем новую строку во второй DataGridView
+                        dataGridView2.Rows.Add(newRow);
+                    }
+                }
+            }
+
+            // Сортировка по столбцу с суммарным Disadventage
+            dataGridView2.Sort(dataGridView2.Columns[6], ListSortDirection.Descending);
+        }
+
+        /// <summary>
+        /// Обновление данных первой таблицы
+        /// </summary>
+        public void DataGridView1Refresher(
+            Dictionary<string, List<float>> firstEnemy,
+            Dictionary<string, List<float>> secondEnemy,
+            Dictionary<string, List<float>> thirdEnemy,
+            Dictionary<string, List<float>> fourthEnemy,
+            Dictionary<string, List<float>> fifthEnemy,
+            string firstEnemyStr,
+            string secondEnemyStr,
+            string thirdEnemyStr,
+            string fourthEnemyStr,
+            string fifthEnemyStr)
+        {
+            // Очистить DataGridView перед заполнением новыми данными
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+
+            // Вычисление результата
+            Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
+            try
+            {
+                result = Parser.CharacterStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, fifthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            // Создание первой таблицы
+            DataGreedViewCreator(dataGridView1, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
+
+            // Заполнение первой таблицы
+            foreach (var character in result)
+            {
+                // Создание строки и добавление ячеек со значениями
+                DataGridViewRow row = new DataGridViewRow();
+
+                DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
+                keyCell.Value = character.Key; // Значение ключа словаря
+                row.Cells.Add(keyCell);
+
+                foreach (var value in character.Value)
+                {
+                    DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
+                    cell.Value = value;
+                    row.Cells.Add(cell);
+                }
+
+                dataGridView1.Rows.Add(row);
+            }
+
+            // Сортировка по столбцу с суммарным Disadventage
+            dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Descending);
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButtonChanger(radioButton1, 0);
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButtonChanger(radioButton2, 1);
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButtonChanger(radioButton3, 2);
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButtonChanger(radioButton4, 3);
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButtonChanger(radioButton5, 4);
+        }
     }
 }
