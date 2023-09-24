@@ -225,7 +225,6 @@ namespace DotabuffWF
             }
 
             // Десериализация или создание JSON файла
-            //Dictionary<string, List<string>> heroPositions = new Dictionary<string, List<string>>();
             try
             {
                 using (var file = new StreamReader(YoursHeroes))
@@ -263,8 +262,6 @@ namespace DotabuffWF
 
             // Сортировка по алфавиту имени персонажа
             dataGridView3.Sort(dataGridView3.Columns[0], ListSortDirection.Ascending);
-
-
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -275,8 +272,6 @@ namespace DotabuffWF
 
         private void InitializeJsonData()
         {
-            //SelectedHeroesDataGreedViewCreator();
-
             // Десериализация или создание JSON файла
             Dictionary<string, List<string>> heroPositions = new Dictionary<string, List<string>>();
             string ProductsFileName = "YoursHeroes.json";
@@ -303,32 +298,8 @@ namespace DotabuffWF
                 }
             }
 
-            // Заполнение таблицы десериализованными данными
-            //foreach (var character in heroPositions)
-            //{
-            //    // Создание строки и добавление ячеек со значениями
-            //    DataGridViewRow row = new DataGridViewRow();
-            //
-            //    DataGridViewTextBoxCell keyCell = new DataGridViewTextBoxCell();
-            //    keyCell.Value = character.Key; // Значение ключа словаря
-            //    row.Cells.Add(keyCell);
-            //
-            //    foreach (var value in character.Value)
-            //    {
-            //        DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-            //        cell.Value = value;
-            //        row.Cells.Add(cell);
-            //    }
-            //
-            //    dataGridView3.Rows.Add(row);
-            //}
-
-
             // Создание и заполнение третьей таблицы десериализованными данными
             DataGridView3Refresher(heroPositions);
-
-
-            
         }
 
         private void RadioButtonChanger(RadioButton radioButton, int characterPosition)
@@ -593,10 +564,9 @@ namespace DotabuffWF
                 }
 
                 dataGridView3.Rows.Add(row);
-                foreach(var cell in cells)
+                foreach (var cell in cells)
                 {
                     dataGridView3.Rows[colorRow].Cells[cell].Style.BackColor = Color.Green;
-
                 }
                 colorRow++;
             }

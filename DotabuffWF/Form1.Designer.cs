@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             dataGridView1 = new DataGridView();
             button1 = new Button();
             comboBox1 = new ComboBox();
@@ -333,7 +334,7 @@
             tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(1110, 524);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "Добление героя в избранное";
+            tabPage2.Text = "Добавление героя в избранное";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // label11
@@ -529,6 +530,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1114, 545);
             Controls.Add(tabControl1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();

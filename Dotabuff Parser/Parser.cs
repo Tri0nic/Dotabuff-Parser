@@ -1,4 +1,6 @@
-﻿namespace Dotabuff_Parser
+﻿using System.Text.RegularExpressions;
+
+namespace Dotabuff_Parser
 {
     public class Parser
     {
@@ -68,19 +70,18 @@
             MergeDictionaries(result, disadventageAndWinrateSum);
             return result;
         }
-
-        /// <summary>
-        /// Слияние первого элемента списка словаря в другой словарь
-        /// </summary>
-        /// <param name="mergedDict">Словарь, в которое происходит слияние</param>
-        /// <param name="dict">Сливающийся словарь</param>
-        public static void MergeFirstListElementInDictionaries(Dictionary<string, List<float>> mergedDict, Dictionary<string, List<float>> dict)
+    
+/// <summary>
+/// Слияние первого элемента списка словаря в другой словарь
+/// </summary>
+/// <param name="mergedDict">Словарь, в которое происходит слияние</param>
+/// <param name="dict">Сливающийся словарь</param>
+public static void MergeFirstListElementInDictionaries(Dictionary<string, List<float>> mergedDict, Dictionary<string, List<float>> dict)
         {
             if (dict == null)
             {
                 foreach (var character in mergedDict)
                 {
-                    //float firstElement = new float();
                     mergedDict[character.Key].Add(new float());
                 }
 
@@ -93,7 +94,6 @@
                     mergedDict[character.Key].Add(firstElement);
                 }
             }
-
         }
 
         /// <summary>
@@ -116,17 +116,12 @@
         /// <param name="thirdEnemy"></param>
         /// <param name="fourthEnemy"></param>
         public static Dictionary<string, List<float>> DisadventageAndWinrateSum(Dictionary<string, List<float>> firstEnemy, Dictionary<string, List<float>> secondEnemy, Dictionary<string, List<float>> thirdEnemy, Dictionary<string, List<float>> fourthEnemy, Dictionary<string, List<float>> fifthEnemy)
-        {   // TODO: сделать перегрузку для двух словарей
+        {   
             Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
-
-            //firstEnemy ??= new Dictionary<string, List<float>>();
-            //secondEnemy ??= new Dictionary<string, List<float>>();
-            //thirdEnemy ??= new Dictionary<string, List<float>>();
-            //fourthEnemy ??= new Dictionary<string, List<float>>();
 
             foreach (var character in firstEnemy)
             {
-                string key = character.Key.ToLower(); //.Replace("-", " ")
+                string key = character.Key.ToLower();
 
                 List<float> value = firstEnemy[key]
                 .Zip(secondEnemy?.GetValueOrDefault(key) ?? Enumerable.Repeat(0f, firstEnemy[key].Count), (a, b) => a + b)
@@ -179,6 +174,7 @@
                                                 if (cells != null && cells.Count >= 4)  // Убедитесь, что есть достаточно ячеек
                                                 {
                                                     string key = cells[1].InnerText.Trim().ToLower();
+                                                    key = Regex.Replace(key, "[^a-zA-Z\\-\\ ]", "");
 
                                                     string disadventageString = cells[2].InnerText.Trim().Replace('.', ',');
                                                     float disadventage = float.Parse(disadventageString.Substring(0, disadventageString.Length - 1));
@@ -192,15 +188,7 @@
 
                                             return result;
                                         }
-                                        //else
-                                        //{
-                                        //    Console.WriteLine("No rows");
-                                        //}
                                     }
-                                    //else
-                                    //{
-                                    //    Console.WriteLine("No tables");
-                                    //}
                                 }
                             }
                         }

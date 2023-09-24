@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotabuff Parser", "Dotabuff Parser\Dotabuff Parser.csproj", "{F45EACD6-BFF1-4278-AA39-130CDE30D4FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotabuff Parser", "Dotabuff Parser\Dotabuff Parser.csproj", "{F45EACD6-BFF1-4278-AA39-130CDE30D4FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotabuffWF", "DotabuffWF\DotabuffWF.csproj", "{30A20330-F809-4F9C-A3FF-2A00B65D41FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotabuffWF", "DotabuffWF\DotabuffWF.csproj", "{30A20330-F809-4F9C-A3FF-2A00B65D41FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
