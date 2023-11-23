@@ -11,6 +11,7 @@ namespace Dotabuff_Parser
         /// <param name="secondEnemy">Второй противник</param>
         /// <param name="thirdEnemy">Третий противник</param>
         /// <param name="fourthEnemy">Четвертый противник</param>
+        /// <param name="fifthEnemy">Пятый противник</param>
         /// <returns></returns>
         public static Dictionary<string, List<float>> CharacterStats(Dictionary<string, List<float>> firstEnemy,
                                                                      Dictionary<string, List<float>> secondEnemy,

@@ -115,17 +115,6 @@ namespace DotabuffWF
             Dictionary<string, List<float>> thirdEnemy = await MakeEnemyDictAsync(thirdEnemyStr);
             Dictionary<string, List<float>> fourthEnemy = await MakeEnemyDictAsync(fourthEnemyStr);
             Dictionary<string, List<float>> fifthEnemy = await MakeEnemyDictAsync(fifthEnemyStr);
-
-            // Вычисление результата
-            Dictionary<string, List<float>> result = new Dictionary<string, List<float>>();
-            try
-            {
-                result = Parser.CharacterStats(firstEnemy, secondEnemy, thirdEnemy, fourthEnemy, fifthEnemy, firstEnemyStr, secondEnemyStr, thirdEnemyStr, fourthEnemyStr, fifthEnemyStr);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
             #endregion
 
             // Заполнение первой таблицы
@@ -151,6 +140,18 @@ namespace DotabuffWF
             comboBox4.DataSource = new List<string>(Characters.characters);
             comboBox5.DataSource = new List<string>(Characters.characters);
             comboBox6.DataSource = new List<string>(Characters.characters);
+
+            comboBox1.DataSource = new List<string>(Characters.characters);
+            comboBox12.DataSource = new List<string>(Characters.characters);
+            comboBox13.DataSource = new List<string>(Characters.characters);
+            comboBox14.DataSource = new List<string>(Characters.characters);
+            comboBox15.DataSource = new List<string>(Characters.characters);
+            comboBox16.DataSource = new List<string>(Characters.characters);
+            comboBox17.DataSource = new List<string>(Characters.characters);
+            comboBox18.DataSource = new List<string>(Characters.characters);
+            comboBox19.DataSource = new List<string>(Characters.characters);
+            comboBox20.DataSource = new List<string>(Characters.characters);
+            comboBox21.DataSource = new List<string>(Characters.characters);
 
             // Привязка + к ComboBox
             comboBox7.DataSource = new List<string>() { "", "+" };
@@ -189,6 +190,16 @@ namespace DotabuffWF
             comboBox9.SelectedIndex = -1;
             comboBox10.SelectedIndex = -1;
             comboBox11.SelectedIndex = -1;
+            comboBox12.SelectedIndex = -1;
+            comboBox13.SelectedIndex = -1;
+            comboBox14.SelectedIndex = -1;
+            comboBox15.SelectedIndex = -1;
+            comboBox16.SelectedIndex = -1;
+            comboBox17.SelectedIndex = -1;
+            comboBox18.SelectedIndex = -1;
+            comboBox19.SelectedIndex = -1;
+            comboBox20.SelectedIndex = -1;
+            comboBox21.SelectedIndex = -1;
         }
 
         // Очистка RadioButton
@@ -221,7 +232,7 @@ namespace DotabuffWF
             }
             catch
             {
-                MessageBox.Show("Выберите персонажа");
+                // MessageBox.Show("Выберите персонажа");
             }
 
             // Десериализация или создание JSON файла
@@ -590,6 +601,118 @@ namespace DotabuffWF
             {
                 file.Write(jsonString);
             }
+        }
+
+        private async void button9_Click(object sender, EventArgs e)
+        {
+            // Преобразование персонажа из comboBox в string
+            string firstRadiantStr = comboBox12.SelectedItem?.ToString();
+            string secondRadiantStr = comboBox13.SelectedItem?.ToString();
+            string thirdRadiantStr = comboBox14.SelectedItem?.ToString();
+            string fourthRadiantStr = comboBox15.SelectedItem?.ToString();
+            string fifthRadiantStr = comboBox16.SelectedItem?.ToString();
+
+            string firstDierStr = comboBox17.SelectedItem?.ToString();
+            string secondDierStr = comboBox18.SelectedItem?.ToString();
+            string thirdDierStr = comboBox19.SelectedItem?.ToString();
+            string fourthDierStr = comboBox20.SelectedItem?.ToString();
+            string fifthDierStr = comboBox21.SelectedItem?.ToString();
+
+            // Создание словарей со статистикой
+            Dictionary<string, List<float>> firstRadiant = await MakeEnemyDictAsync(firstRadiantStr);
+            Dictionary<string, List<float>> secondRadiant = await MakeEnemyDictAsync(secondRadiantStr);
+            Dictionary<string, List<float>> thirdRadiant = await MakeEnemyDictAsync(thirdRadiantStr);
+            Dictionary<string, List<float>> fourthRadiant = await MakeEnemyDictAsync(fourthRadiantStr);
+            Dictionary<string, List<float>> fifthRadiant = await MakeEnemyDictAsync(fifthRadiantStr);
+
+            Dictionary<string, List<float>> firstDier = await MakeEnemyDictAsync(firstDierStr);
+            Dictionary<string, List<float>> secondDier = await MakeEnemyDictAsync(secondDierStr);
+            Dictionary<string, List<float>> thirdDier = await MakeEnemyDictAsync(thirdDierStr);
+            Dictionary<string, List<float>> fourthDier = await MakeEnemyDictAsync(fourthDierStr);
+            Dictionary<string, List<float>> fifthDier = await MakeEnemyDictAsync(fifthDierStr);
+
+            // Вычисление таблиц со статистикой
+            Dictionary<string, List<float>> resultRadiant = new Dictionary<string, List<float>>();
+            Dictionary<string, List<float>> resultDier = new Dictionary<string, List<float>>();
+            try
+            {
+                resultRadiant = Parser.CharacterStats(firstRadiant, secondRadiant, thirdRadiant, fourthRadiant, fifthRadiant, firstRadiantStr, secondRadiantStr, thirdRadiantStr, fourthRadiantStr, fifthRadiantStr);
+                resultDier = Parser.CharacterStats(firstDier, secondDier, thirdDier, fourthDier, fifthDier, firstDierStr, secondDierStr, thirdDierStr, fourthDierStr, fifthDierStr);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            // Сопоставление персонажей между radiant и dier
+            float firstDierQuantity = resultRadiant[firstDierStr][5];
+            float secondDierQuantity = resultRadiant[secondDierStr][5];
+            float thirdDierQuantity = resultRadiant[thirdDierStr][5];
+            float fourthDierQuantity = resultRadiant[fourthDierStr][5];
+            float fifthDierQuantity = resultRadiant[fifthDierStr][5];
+
+            float firstRadiantQuantity = resultDier[firstRadiantStr][5];
+            float secondRadiantQuantity = resultDier[secondRadiantStr][5];
+            float thirdRadiantQuantity = resultDier[thirdRadiantStr][5];
+            float fourthRadiantQuantity = resultDier[fourthRadiantStr][5];
+            float fifthRadiantQuantity = resultDier[fifthRadiantStr][5];
+
+            float dierSum = firstDierQuantity + secondDierQuantity + thirdDierQuantity + fourthDierQuantity + fifthDierQuantity;
+            float radiantSum = firstRadiantQuantity + secondRadiantQuantity + thirdRadiantQuantity + fourthRadiantQuantity + fifthRadiantQuantity;
+
+            float teamDifference = radiantSum - dierSum;
+
+            label20.Text = firstDierQuantity.ToString();
+            label24.Text = secondDierQuantity.ToString();
+            label23.Text = thirdDierQuantity.ToString();
+            label22.Text = fourthDierQuantity.ToString();
+            label21.Text = fifthDierQuantity.ToString();
+
+            label19.Text = firstRadiantQuantity.ToString();
+            label15.Text = secondRadiantQuantity.ToString();
+            label16.Text = thirdRadiantQuantity.ToString();
+            label17.Text = fourthRadiantQuantity.ToString();
+            label18.Text = fifthRadiantQuantity.ToString();
+
+            label25.Text = radiantSum.ToString();
+            label26.Text = dierSum.ToString();
+
+            label27.Text = teamDifference.ToString();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            ComboBox1Clear();
+        }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            ComboBox2Clear();
+        }
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ComboBox1Clear();
+            ComboBox2Clear();
+        }
+
+        public void ComboBox1Clear()
+        {
+            comboBox12.SelectedIndex = -1;
+            comboBox13.SelectedIndex = -1;
+            comboBox14.SelectedIndex = -1;
+            comboBox15.SelectedIndex = -1;
+            comboBox16.SelectedIndex = -1;
+        }
+        public void ComboBox2Clear()
+        {
+            comboBox17.SelectedIndex = -1;
+            comboBox18.SelectedIndex = -1;
+            comboBox19.SelectedIndex = -1;
+            comboBox20.SelectedIndex = -1;
+            comboBox21.SelectedIndex = -1;
         }
     }
 }
