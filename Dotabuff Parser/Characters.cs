@@ -94,6 +94,7 @@ namespace Dotabuff_Parser
             "queen of pain",
             "razor",
             "riki",
+            "ringmaster",
             "rubick",
             "sand king",
             "shadow demon",
